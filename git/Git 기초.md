@@ -6,7 +6,7 @@
 
 
 
-# 기본 명령어
+## 기본 명령어
 
 1. git 저장소(`repository`) 초기화
 
@@ -63,3 +63,54 @@
 
    * CLI(Command Line Interface)에서는 현재 상태를 알기 위해 반드시 명령어를 통해 확인해야 한다.
    * 커밋할 목록에 담겨 있는지, untracked인지, commit할 내역이 없는지 등등 다양한 정보를 알려준다.
+
+
+
+## 원격 저장소 활용하기
+
+1. 원격 저장소 (remote repository) 등록하기
+
+   ```bash
+   $ git remote add origin _____경로_____
+   ```
+
+   * 원격 저장소(remote)를 등록(add)한다. `origin`이라는 이름으로 `경로`를.
+   * 최초에 한번만 등록하면 된다.
+   * 아래의 명령어로 현재 등록된 원격 저장소를 확인할 수 있다.
+
+   ```bash
+   $ git remote -v
+   origin  https://github.com/jiuney/TIL.git (fetch)
+   origin  https://github.com/jiuney/TIL.git (push)
+   ```
+
+2. 원격 저장소에 올리기 (push)
+
+   ```bash
+   $ git push origin master
+   ```
+
+   * `git`! 올려줘(push) `origin`이라는 이름의 원격저장소에 `master`로!
+
+3. 원격 저장소로부터 가져오기 (pull)
+
+
+
+## 원격 저장소 복제 (Clone) 하기
+
+```bash
+$ git clone _____경로_____
+```
+
+* 다운받기를 원하는 폴더에서 `git bash`를 열고 위의 명령어를 입력한다.
+* 경로는 `git hub`에서 우측에 있는 초록색 버튼을 누르면 나타난다.
+
+
+
+# 주의!!!
+
+반드시 집에서 작업하고 난 뒤에 `git push origin master` 하고 멀티캠퍼스로 오세요.
+
+오자마자 `git pull origin master`하세요!!!!!
+
+멀캠에서 퇴근할 때 `push`, 집에 가서 `pull`!!
