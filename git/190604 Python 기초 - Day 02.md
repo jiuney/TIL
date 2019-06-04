@@ -63,7 +63,7 @@
 
 1. Virtual Box에 Win2019 설치하고 설정
 
-   ![c01](C:\Users\user\Desktop\capture\c01.PNG)
+   ![c01](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c01.PNG)
 
    ![c02](C:\Users\user\Desktop\capture\c02.PNG)
 
