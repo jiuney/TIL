@@ -65,98 +65,98 @@
 
    ![c01](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c01.PNG)
 
-   ![c02](C:\Users\user\Desktop\capture\c02.PNG)
+   ![c02](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c02.PNG)
 
-   ![c03](C:\Users\user\Desktop\capture\c03.PNG)
+   ![c03](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c03.PNG)
 
-   ![c04](C:\Users\user\Desktop\capture\c04.PNG)
+   ![c04](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c04.PNG)
 
 2. Win2019에 SQL 2017과 MySQL 8.0을 설치하고 설정
 
-   ![c05](C:\Users\user\Desktop\capture\c05.PNG)
+   ![c05](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c05.PNG)
 
-   ![c06](C:\Users\user\Desktop\capture\c06.PNG)
+   ![c06](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c06.PNG)
 
-   ![c07](C:\Users\user\Desktop\capture\c07.PNG)
+   ![c07](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c07.PNG)
 
-   ![c08](C:\Users\user\Desktop\capture\c08.PNG)
+   ![c08](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c08.PNG)
 
-   ![c09](C:\Users\user\Desktop\capture\c09.PNG)
+   ![c09](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c09.PNG)
 
 3. Win2019에 Python 3.6과 PyCharm 설치 후 Hello World 작성
 
-   ![c10](C:\Users\user\Desktop\capture\c10.PNG)
+   ![c10](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c10.PNG)
 
-   ![c11](C:\Users\user\Desktop\capture\c11.PNG)
+   ![c11](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c11.PNG)
 
-   ![c12](C:\Users\user\Desktop\capture\c12.PNG)
+   ![c12](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c12.PNG)
 
-   ![c13](C:\Users\user\Desktop\capture\c13.PNG)
+   ![c13](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c13.PNG)
 
-   ![c14](C:\Users\user\Desktop\capture\c14.PNG)
+   ![c14](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c14.PNG)
 
-   ![c15](C:\Users\user\Desktop\capture\c15.PNG)
+   ![c15](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c15.PNG)
 
-   ![c16](C:\Users\user\Desktop\capture\c16.PNG)
+   ![c16](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c16.PNG)
 
-   ![c17](C:\Users\user\Desktop\capture\c17.PNG)
+   ![c17](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c17.PNG)
 
-   ![c18 - hello world](C:\Users\user\Desktop\capture\c18 - hello world.PNG)
+   ![c18 - hello world](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c18%20-%20hello%20world.PNG)
 
 4. PC의 HeidiSQL에서 SQL 2017과 MySQL 8.0에 접속
 
-   ![c19](C:\Users\user\Desktop\capture\c19.PNG)
+   ![c19](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c19.PNG)
 
-   ![c20](C:\Users\user\Desktop\capture\c20.PNG)
+   ![c20](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c20.PNG)
 
-   ![c21](C:\Users\user\Desktop\capture\c21.PNG)
+   ![c21](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c21.PNG)
 
-   ![c22](C:\Users\user\Desktop\capture\c22.PNG)
+   ![c22](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c22.PNG)
 
-   ![c23](C:\Users\user\Desktop\capture\c23.PNG)
+   ![c23](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c23.PNG)
 
-   ![c24](C:\Users\user\Desktop\capture\c24.PNG)
+   ![c24](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c24.PNG)
 
-   ![c25](C:\Users\user\Desktop\capture\c25.PNG)
+   ![c25](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c25.PNG)
 
-   ![c26](C:\Users\user\Desktop\capture\c26.PNG)
+   ![c26](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c26.PNG)
 
-   ![c27](C:\Users\user\Desktop\capture\c27.PNG)
+   ![c27](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c27.PNG)
 
-   ![c28](C:\Users\user\Desktop\capture\c28.PNG)
+   ![c28](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c28.PNG)
 
-   ![c29](C:\Users\user\Desktop\capture\c29.PNG)
+   ![c29](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c29.PNG)
 
-   ![c30](C:\Users\user\Desktop\capture\c30.PNG)
+   ![c30](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c30.PNG)
 
-   ![c31](C:\Users\user\Desktop\capture\c31.PNG)
+   ![c31](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c31.PNG)
 
-   ![c32](C:\Users\user\Desktop\capture\c32.PNG)
+   ![c32](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c32.PNG)
 
-   ![c33](C:\Users\user\Desktop\capture\c33.PNG)
+   ![c33](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c33.PNG)
 
-   ![c34](C:\Users\user\Desktop\capture\c34.PNG)
+   ![c34](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c34.PNG)
 
-   ![c35](C:\Users\user\Desktop\capture\c35.PNG)
+   ![c35](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c35.PNG)
 
-   ![c36](C:\Users\user\Desktop\capture\c36.PNG)
+   ![c36](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c36.PNG)
 
-   ![c37](C:\Users\user\Desktop\capture\c37.PNG)
+   ![c37](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c37.PNG)
 
-   ![c38](C:\Users\user\Desktop\capture\c38.PNG)
+   ![c38](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c38.PNG)
 
    * 중요!  여기서 설정 다 끝낸 후에 서버 오른쪽 클릭해서 Restart를 눌러야 설정이 완료된다.
 
-   ![c39](C:\Users\user\Desktop\capture\c39.PNG)
+   ![c39](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c39.PNG)
 
-   ![c40](C:\Users\user\Desktop\capture\c40.PNG)
+   ![c40](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c40.PNG)
 
-   ![c41](C:\Users\user\Desktop\capture\c41.PNG)
+   ![c41](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c41.PNG)
 
-   ![c42 - SQL Server](C:\Users\user\Desktop\capture\c42 - SQL Server.PNG)
+   ![c42 - SQL Server](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c42%20-%20SQL%20Server.PNG)
 
-   ![c43](C:\Users\user\Desktop\capture\c43.PNG)
+   ![c43](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c43.PNG)
 
-   ![c44](C:\Users\user\Desktop\capture\c44.PNG)
+   ![c44](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c44.PNG)
 
-   ![c45 - MySQL](C:\Users\user\Desktop\capture\c45 - MySQL.PNG)
+   ![c45 - MySQL](https://github.com/jiuney/TIL/blob/master/img/190604%20capture/c45%20-%20MySQL.PNG)
