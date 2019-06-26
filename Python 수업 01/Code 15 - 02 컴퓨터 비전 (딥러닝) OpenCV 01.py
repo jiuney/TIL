@@ -15,7 +15,7 @@ from PIL.ImageFilter import GaussianBlur
 import PIL.ImageOps
 import colorsys
 import numpy as np
-import pymysql
+import cv2
 
 
 
@@ -34,13 +34,22 @@ def malloc(h, w, initValue=0):    # malloc = memory allocate
         retMemory.append(tmpList)
     return retMemory
 
-def loadImageColor(fname):
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo
+def loadImageColor(fnameOrCvData):    # 파일명 or OpenCV 개체가 올 수 있게 수정
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
 
     inImage = []
-    photo = Image.open(fname)    # PIL 객체
+
+    ################################
+    # PIL 개체 --> OpenCV 개체로 복사
+    if type(fnameOrCvData) == str:
+        cvData = cv2.imread(fnameOrCvData)    # 파일에서 CV데이터로 변환
+    else:
+        cvData = fnameOrCvData
+    cvPhoto = cv2.cvtColor(cvData, cv2.COLOR_BGR2RGB)    # 중요! CV개체
+    photo = Image.fromarray(cvPhoto)  # 중요! PIL 객체
     inH = photo.height
     inW = photo.width
+    ################################
 
     # 메모리 확보
     for _ in range(3):
@@ -73,60 +82,25 @@ def displayImageColor():
     if canvas!= None:    # 예전에 실행한 적이 있다면
         canvas.destroy()
 
-    global VIEW_X, VIEW_Y
-    # VIEW_X, VIEW_Y = 512, 512
-    ## 고정된 화면 크기
-    # 가로/세로 비율 계산
+    if outH <= VIEW_Y or outW <= VIEW_X:
+        VIEW_X = outW
+        VIEW_Y = outH
+        step = 1
+    else:
+        VIEW_X = 512
+        VIEW_Y = 512
+        step = outW / VIEW_X
 
-    if inW <= 512 and inH <= 512:  # 정방형 관계없이 둘다 512보다 작으면 그냥 사용
-        VIEW_X = outH
-        VIEW_Y = outW
-    else:  # 한쪽이라도 512보다 크면
-        ratio = outH / outW
-        if ratio < 1:
-            VIEW_X = int(512 * ratio)
-            if outW > 512:
-                VIEW_Y = 512
-            else:
-                VIEW_Y = outW
-        elif ratio > 1:
-            ratio = 1 / ratio
-            if outH > 512:
-                VIEW_X = 512
-            else:
-                VIEW_X = outH
-            VIEW_Y = int(512 * ratio)
-        else:
-            if outH > 512:
-                VIEW_X = 512
-            else:
-                VIEW_X = outH
-            if outW > 512:
-                VIEW_Y = 512
-            else:
-                VIEW_Y = outW
-
-    if outH <= VIEW_X:
-        stepX = 1
-    if outH > VIEW_X:
-        stepX = outH / VIEW_X
-
-    if outW <= VIEW_Y:
-        stepY = 1
-    if outW > VIEW_Y:
-        stepY = outW / VIEW_Y
-
-    window.geometry(str(int(VIEW_Y * 1.2)) + 'x' + str(int(VIEW_X * 1.2)))  # 벽
-    canvas = Canvas(window, height=VIEW_X, width=VIEW_Y)
-    paper = PhotoImage(height=VIEW_X, width=VIEW_Y)
-    canvas.create_image((VIEW_Y // 2, VIEW_X // 2), image=paper, state='normal')
-
+    window.geometry(str(int(VIEW_X*1.2)) + "x" + str(int(VIEW_Y*1.2)))
+    canvas = Canvas(window, height=VIEW_Y, width=VIEW_X)
+    paper = PhotoImage(height=VIEW_Y, width=VIEW_X)
+    canvas.create_image((VIEW_X // 2, VIEW_Y // 2), image=paper, state="normal")
     import numpy
     # 성능 개선
     rgbStr = ""    # 전체 픽셀의 문자열을 저장
-    for i in numpy.arange(0, outH, stepX):
+    for i in numpy.arange(0, outH, step):
         tmpStr = ""
-        for k in numpy.arange(0, outW, stepY):
+        for k in numpy.arange(0, outW, step):
             i = int(i)
             k = int(k)
             r, g, b = outImage[R][i][k], outImage[G][i][k], outImage[B][i][k]
@@ -154,9 +128,7 @@ def saveImageColor():
         outArray.append(tmpList)
 
     outArray = np.array(outArray)
-    print(outArray)
     savePhoto = Image.fromarray(outArray.astype(np.uint8), "RGB")
-    print(savePhoto)
 
     saveFp = asksaveasfile(parent=window, mode='wb', defaultextension=".",
                            filetypes=(("그림 파일", "*.png;*.jpg;*.bmp;*.tif"), ("모든 파일", "*.*")))
@@ -724,7 +696,7 @@ def embossImageRGBColor():
 
 # 엠보싱 처리 알고리즘 (Pillow 이용)
 def embossImagePILColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
 
     photo2 = photo.copy()
     photo2 = photo2.filter(ImageFilter.EMBOSS)
@@ -917,7 +889,7 @@ def blurImageRGBColor():
 
 # 채도 조절 알고리즘 (Pillow 이용)
 def addSValuePillow():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
 
     value = askfloat("채도 조절", "0 ~ 1 ~ 10")
     photo2 = photo.copy()
@@ -985,287 +957,172 @@ def addSValueHSV():
 
     displayImageColor()
 
-# 임시 경로에 outImage를 저장하기
-import random
-def saveTempImage():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    import tempfile
-    saveFp = tempfile.gettempdir() + "/" + os.path.basename(filename)
-    if saveFp == "" or saveFp == None:
+
+
+
+
+##################################
+##### OpenCV 알고리즘 함수 모음 #####
+##################################
+
+def toColorOutArray(pillowPhoto):
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
+
+    if inImage == None:
         return
-    saveFp = open(saveFp, mode="wb")
 
-    outArray = []
-    for i in range(outH):
-        tmpList = []
-        for k in range(outW):
-            tup = tuple([outImage[R][i][k], outImage[G][i][k], outImage[B][i][k]])
-            tmpList.append(tup)
-        outArray.append(tmpList)
-
-    outArray = np.array(outArray)
-    savePhoto = Image.fromarray(outArray.astype(np.uint8), "RGB")
-
-    savePhoto.save(saveFp.name)
-    saveFp.close()
-    return saveFp
-
-# # 영상 메타데이터 만들기
-# def findStat(fname):
-#     # 파일 열고, 읽기.
-#     fsize = os.path.getsize(fname)    # 파일의 크기 (바이트)
-#     inH = inW = int(math.sqrt(fsize))    # 핵심 코드
-#     photo = Image.open(fname)  # PIL 객체
-#     inH = photo.height
-#     inW = photo.width
-#     # 입력 영상 메모리 확보
-#     inImage = []
-#     for _ in range(3):
-#         inImage.append(malloc(inH, inW))
-#     # 파일에서 메모리로 가져오기
-#     photoRGB = photo.convert("RGB")
-#     for i in range(inH):
-#         for k in range(inW):
-#             r, g, b = photoRGB.getpixel((k, i))  # r, g, b 채널을 나눠서 정보를 저장한 것
-#             inImage[R][i][k] = r
-#             inImage[G][i][k] = g
-#             inImage[B][i][k] = b
-#     sum = [0] * 3
-#     avg = [0] * 3
-#     for RGB in range(3):
-#         for i in range(inH):
-#             for k in range(inW):
-#                 sum[RGB] += inImage[RGB][i][k]
-#         avg[RGB] = int(sum[RGB] / (inH*inW))
-#     maxVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
-#     minVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
-#     for RGB in range(3):
-#         for i in range(inH):
-#             for k in range(inW):
-#                 if inImage[RGB][i][k] < minVal[RGB]:
-#                     minVal[RGB] = inImage[RGB][i][k]
-#                 elif inImage[RGB][i][k] > maxVal[RGB]:
-#                     maxVal[RGB] = inImage[RGB][i][k]
-#     return avg, maxVal, minVal
-
-# MySQL에 저장
-def saveMysqlColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-
-    con = pymysql.connect(host=IP_ADDR, user=USER_NAME, password=USER_PW, db=DB_NAME, charset=CHAR_SET)
-    cur = con.cursor()
-
-    try:
-        sql = "CREATE TABLE colorImage_TBL (raw_id INT AUTO_INCREMENT PRIMARY KEY, raw_fname VARCHAR(30), raw_extname CHAR(5), raw_height SMALLINT, raw_width SMALLINT, raw_data LONGBLOB);"
-        cur.execute(sql)
-    except:
-        pass
-
-    # outImage를 임시 폴더에 저장하고, 이걸 fullname으로 전달
-
-    fullname = saveTempImage()
-    fullname = fullname.name
-
-    with open(fullname, "rb") as rfp:    # rb = read binary
-        binData = rfp.read()
-
-    fname, extname = os.path.basename(fullname).split(".")
-    fsize = os.path.getsize(fullname)
-    height = width = int(math.sqrt(fsize))
-
-    # avgVal, maxVal, minVal = findStat(fullname)    # 평균, 최대, 최소
-
-    sql = "INSERT INTO colorimage_tbl (raw_id, raw_fname, raw_extname, raw_height, raw_width, raw_data)"
-    sql += " VALUES(NULL, '" + fname + "', '" + extname + "', " + str(height) + ", " + str(width) + ", %s)"
-
-    tupleData = (binData,)
-    cur.execute(sql, tupleData)
-    con.commit()
-    cur.close()
-    con.close()
-    os.remove(fullname)
-    print("끝!!")
-
-# MySQL에서 불러오기
-def loadMysqlColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-
-    con = pymysql.connect(host=IP_ADDR, user=USER_NAME, password=USER_PW, db=DB_NAME, charset=CHAR_SET)
-    cur = con.cursor()
-
-    sql = "SELECT raw_id, raw_fname, raw_extname, raw_height, raw_width FROM colorimage_tbl"
-    cur.execute(sql)
-
-    queryList = cur.fetchall()
-    rowList = [":".join(map(str,row)) for row in queryList]
-
-    def selectRecord():
-        global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-        selIndex = listbox.curselection()[0]
-        subWindow.destroy()
-        raw_id = queryList[selIndex][0]
-        sql = "SELECT raw_fname, raw_extname, raw_data FROM colorimage_tbl WHERE raw_id = " + str(raw_id)
-        cur.execute(sql)
-        fname, extname, binData = cur.fetchone()
-        import tempfile
-        # 모든 windows 컴퓨터에 있는 temp 폴더에 저장하기
-        fullPath = tempfile.gettempdir() + "/" + fname + "." + extname
-        with open(fullPath, "wb") as wfp:  # wb = write binary
-            wfp.write(binData)
-        cur.close()
-        con.close()
-
-        loadImageColor(fullPath)
-        equalImageColor()
-        os.remove(fullPath)
-
-    # 서브 윈도우에 목록 출력하기
-    subWindow = Toplevel(window)    # Toplevel(window) = "window라는 Tk 밑에 있는 새로운 Tk이다"라는 뜻
-    # subWindow.geometry("256x256")
-    listbox = Listbox(subWindow)
-    button = Button(subWindow, text="선택", command = selectRecord)
-    for rowStr in rowList:
-        listbox.insert(END, rowStr)
-
-    listbox.pack(expand=1, anchor=CENTER)
-    button.pack()
-    subWindow.mainloop()
-
-    cur.close()
-    con.close()
-
-# CSV 파일 불러오기
-def loadCsvColor(fname):
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    with open(fname, "r") as rFp:  # rb = binary
-        for row_list in rFp:
-            row, col = list(map(int,row_list.strip().split(",")))[0:2]
-            inH = row + 1
-            inW = col + 1
-    inImage = []
+    outH = pillowPhoto.height
+    outW = pillowPhoto.width
+    outImage = []
     for _ in range(3):
-        inImage.append(malloc(inH, inW))
-    # 파일에서 메모리로 가져오기
-    with open(fname, "r") as rFp:  # rb = binary
-        for row_list in rFp:
-            row, col, r, g, b = list(map(int,row_list.strip().split(",")))
-            inImage[R][row][col], inImage[G][row][col], inImage[B][row][col] = r, g, b
-
-# CSV 파일을 선택해서 메모리로 로딩하는 함수
-def openCsvColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH,outW
-    filename = askopenfilename(parent=window,
-                               filetypes=(("CSV 파일", "*.csv"), ("모든 파일", "*.*")))
-    if filename == "" or filename == None:
-        return
-    loadCsvColor(filename)
-    equalImageColor()
-
-# CSV 파일로 저장하기
-def saveCsvColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    saveFp = asksaveasfile(parent=window, mode='wb', defaultextension="*.csv", filetypes=(("CSV 파일", "*.csv"), ("모든 파일", "*.*")))
-    if saveFp == "" or saveFp == None:
-        return
-    with open(saveFp.name, mode="w", newline="") as wFp:
-        csvWriter = csv.writer(wFp)
-        for i in range (outH):
-            for k in range (outW):
-                row_list = [i, k, outImage[R][i][k], outImage[G][i][k], outImage[B][i][k]]
-                csvWriter.writerow(row_list)
-    print("CSV. save OK")
-
-# 엑셀아트로 저장하기
-def saveExcelArtColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    saveFp = asksaveasfile(parent=window, mode='wb', defaultextension="*.xls", filetypes=(("XLS 파일", "*.xls"), ("모든 파일", "*.*")))
-    if saveFp == "" or saveFp == None:
-        return
-    xlsName = saveFp.name
-    sheetName = os.path.basename(filename)
-
-    wb = xlsxwriter.Workbook(xlsName)
-    ws = wb.add_worksheet(sheetName)
-
-    ws.set_column(0, outW-1, 1.0)    # 약 0.34
-    # 폭은 한번에 조절되지만 높이는 하나씩 조절해야 한다
-    for i in range(outH):
-        ws.set_row(i, 9.5)    # 약 0.35
-
+        outImage.append(malloc(outH, outW))
+    photoRGB = pillowPhoto.convert("RGB")
     for i in range(outH):
         for k in range(outW):
-            hexStr = [0] * 3
-            for RGB in range(3):
-                data = outImage[RGB][i][k]
-                # data 값으로 셀의 배경색을 조절 #000000 ~ #FFFFFF
-                if data>15:
-                    hexStr[RGB] = hex(data)[2:]
-                else:    # 15 미만은 한자리수가 되므로 앞에 0을 붙여줘야 3을 곱했을 때 6자리가 된다
-                    hexStr[RGB] = ("0" + hex(data)[2:])
-            # 셀의 포맷을 준비
-            cell_format = wb.add_format()
-            cell_format.set_bg_color("#" + str(hexStr[R]) + str(hexStr[G]) + str(hexStr[B]))
-            ws.write(i, k, "", cell_format)
-    wb.close()
-    print("Excel Art. save OK")
+            r, g, b = photoRGB.getpixel((k, i))
+            outImage[R][i][k], outImage[G][i][k], outImage[B][i][k] = r, g, b
+    displayImageColor()
 
-# 엑셀로 저장하기 -- 가로길이 256 이하만 저장 가능
-def saveExcelColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    saveFp = asksaveasfile(parent=window, mode='wb', defaultextension="*.xls", filetypes=(("XLS 파일", "*.xls"), ("모든 파일", "*.*")))
-    if saveFp == "" or saveFp == None:
+def embossOpenCV():
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
+
+    if inImage == None:
         return
-    xlsName = saveFp.name
-    sheetName = os.path.basename(filename)
-    wb = xlwt.Workbook()
-    ws_r = wb.add_sheet(sheetName + "_R")
-    ws_g = wb.add_sheet(sheetName + "_G")
-    ws_b = wb.add_sheet(sheetName + "_B")
-    for i in range(outH):
-        for k in range(outW):
-            ws_r.write(i, k, outImage[R][i][k])
-            ws_g.write(i, k, outImage[G][i][k])
-            ws_b.write(i, k, outImage[B][i][k])
-    wb.save(xlsName)
-    print("Excel. save OK")
 
-# 엑셀에서 불러오기
-def loadExcelColor(fname):
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    cvPhoto2 = cvPhoto[:]
 
-    wb = xlrd.open_workbook(fname)
-    ws = wb.sheets()
+    mask = np.zeros((3,3), np.float32)
+    mask[0][0] = -1
+    mask[2][2] = 1
 
-    inH = ws[0].nrows
-    inW = ws[0].ncols
+    cvPhoto2 = cv2.filter2D(cvPhoto2, -1, mask)
 
-    inImage = []
-    for _ in range(3):
-        inImage.append(malloc(inH, inW))
+    cvPhoto2 += 127
 
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                inImage[RGB][i][k] = int(ws[RGB].cell_value(i, k))
+    photo2 = Image.fromarray(cvPhoto2)    # CV개체를 PIL개체로
 
-def openExcelColor():
-    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH,outW
-    filename = askopenfilename(parent=window,
-                               filetypes=(("엑셀 파일", "*.xls;*.xlsx"), ("모든 파일", "*.*")))
-    if filename == "" or filename == None:
+    toColorOutArray(photo2)
+
+def grayscaleOpenCV():
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
+
+    if inImage == None:
         return
-    loadExcelColor(filename)
-    equalImageColor()
 
+    # 이 부분이 OpenCV 처리 부분 #############################
+    cvPhoto2 = cvPhoto[:]
+    cvPhoto2 = cv2.cvtColor(cvPhoto2, cv2.COLOR_RGB2GRAY)
+    photo2 = Image.fromarray(cvPhoto2)
+    #######################################################
 
+    toColorOutArray(photo2)
 
+def blurOpenCV():
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
 
+    if inImage == None:
+        return
 
+    # 이 부분이 OpenCV 처리 부분 #############################
+    mSize = askinteger("블러링", "마스크 크기 (홀수): ")
+    cvPhoto2 = cvPhoto[:]
 
+    mask = np.ones((mSize, mSize), np.float32) / (mSize*mSize)
+    cvPhoto2 = cv2.filter2D(cvPhoto2, -1, mask)
 
+    photo2 = Image.fromarray(cvPhoto2)
+    #######################################################
 
+    toColorOutArray(photo2)
 
+def rotateOpenCV():
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
 
+    if inImage == None:
+        return
+
+    # 이 부분이 OpenCV 처리 부분 #############################
+    cvPhoto2 = cvPhoto[:]
+
+    angle = askinteger("회전", "각도")
+    rotate_matrix = cv2.getRotationMatrix2D((outH//2, outW//2), angle, 1)    # 중앙점, 각도, 확대
+    cvPhoto2 = cv2.warpAffine(cvPhoto2, rotate_matrix, (outH, outW))
+
+    photo2 = Image.fromarray(cvPhoto2)
+    #######################################################
+
+    toColorOutArray(photo2)
+
+def zoomOpenCV():
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW, photo, cvPhoto
+
+    if inImage == None:
+        return
+
+    # 이 부분이 OpenCV 처리 부분 #############################
+    cvPhoto2 = cvPhoto[:]
+
+    scale = askfloat("확대 및 축소", "배수")
+
+    cvPhoto2 = cv2.resize(cvPhoto2, None, fx=scale, fy=scale)
+    photo2 = Image.fromarray(cvPhoto2)
+    #######################################################
+
+    toColorOutArray(photo2)
+
+def waveHorOpenCV() :
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    global photo, cvPhoto
+    if inImage == None:
+        return
+    ###이 부분이 OpenCV 처리 부분##########################
+    cvPhoto2 = np.zeros(cvPhoto.shape, dtype=cvPhoto.dtype)
+    for i in range(inH) :
+        for k in range(inW) :
+            oy = int(15.0 * math.sin(2 * 3.14 * k / 180))
+            ox = 0
+            if i+oy < inH :
+                cvPhoto2[i][k] = cvPhoto [(i + oy) % inH][k]
+            else :
+                cvPhoto2[i][k] = 0
+    photo2 = Image.fromarray(cvPhoto2)
+    ###################################################
+    toColorOutArray(photo2)
+
+def waveVirOpenCV() :
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    global photo, cvPhoto
+    if inImage == None:
+        return
+    ###이 부분이 OpenCV 처리 부분##########################
+    cvPhoto2 = np.zeros(cvPhoto.shape, dtype=cvPhoto.dtype)
+    for i in range(inH):
+        for k in range(inW):
+            ox = int(25.0 * math.sin(2 * 3.14 * i / 180))
+            oy = 0
+            if k + ox < inW:
+                cvPhoto2[i][k] = cvPhoto[i][(k + ox) % inW]
+            else:
+                cvPhoto2[i][k] = 0
+    photo2 = Image.fromarray(cvPhoto2)
+    ###################################################
+    toColorOutArray(photo2)
+
+def cartoonOpenCV() :
+    global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
+    global photo, cvPhoto
+    if inImage == None:
+        return
+    ###이 부분이 OpenCV 처리 부분##########################
+    cvPhoto2 = cvPhoto[:]
+    cvPhoto2 = cv2.cvtColor(cvPhoto2, cv2.COLOR_RGB2GRAY)
+    cvPhoto2 = cv2.medianBlur(cvPhoto2, 7)
+    edges = cv2.Laplacian(cvPhoto2, cv2.CV_8U, ksize=5)
+    ret, mask = cv2.threshold(edges, 100, 255, cv2.THRESH_BINARY_INV)
+    cvPhoto2 = cv2.cvtColor(mask, cv2.COLOR_GRAY2RGB)
+    photo2 = Image.fromarray(cvPhoto2)
+    ###################################################
+    toColorOutArray(photo2)
 
 
 
@@ -1290,12 +1147,6 @@ VIEW_X, VIEW_Y = 512, 512 # 화면에 보일 크기 (출력용)
 
 panYN = False
 sx, sy, ex, ey = [0] * 4
-
-IP_ADDR = "192.168.56.114"
-USER_NAME = "root"
-USER_PW = "1234"
-DB_NAME = "BigData_DB"
-CHAR_SET = "utf8"
 
 
 
@@ -1367,18 +1218,32 @@ comVisionMenu4.add_command(label="블러 처리", command=blurImageRGBColor)
 # comVisionMenu4.add_command(label="고주파 필터 샤프닝", command=hpfsharpenImage)
 # comVisionMenu4.add_command(label="저주파 필터 샤프닝", command=lpfsharpenImage)
 # comVisionMenu4.add_command(label="경계선 검출", command=edgeImage)
+#
+# comVisionMenu5 = Menu(mainMenu)
+# mainMenu.add_cascade(label="기타 입출력", menu=comVisionMenu5)
+# comVisionMenu5.add_command(label="MySQL에서 불러오기", command=loadMysql)
+# comVisionMenu5.add_command(label="MySQL로 저장하기", command=saveMysql)
+# comVisionMenu2.add_separator()
+# comVisionMenu5.add_command(label="CSV 열기", command=openCsv)
+# comVisionMenu5.add_command(label="CSV 저장", command=saveCsv)
+# comVisionMenu2.add_separator()
+# comVisionMenu5.add_command(label="엑셀 열기", command=openExcel)
+# comVisionMenu5.add_command(label="엑셀 저장", command=saveExcel)
+# comVisionMenu5.add_command(label="엑셀 아트로 저장", command=saveExcelArt)
 
-comVisionMenu5 = Menu(mainMenu)
-mainMenu.add_cascade(label="기타 입출력", menu=comVisionMenu5)
-comVisionMenu5.add_command(label="MySQL에서 불러오기", command=loadMysqlColor)
-comVisionMenu5.add_command(label="MySQL로 저장하기", command=saveMysqlColor)
-comVisionMenu2.add_separator()
-comVisionMenu5.add_command(label="CSV 열기", command=openCsvColor)
-comVisionMenu5.add_command(label="CSV 저장", command=saveCsvColor)
-comVisionMenu2.add_separator()
-comVisionMenu5.add_command(label="엑셀 열기", command=openExcelColor)
-comVisionMenu5.add_command(label="엑셀 저장", command=saveExcelColor)
-comVisionMenu5.add_command(label="엑셀 아트로 저장", command=saveExcelArtColor)
+openCVMenu = Menu(mainMenu)
+mainMenu.add_cascade(label="OpenCV 딥러닝", menu=openCVMenu)
+openCVMenu.add_command(label="엠보싱 처리 (OpenCV)", command=embossOpenCV)
+openCVMenu.add_command(label="그레이스케일 (OpenCV)", command=grayscaleOpenCV)
+openCVMenu.add_command(label="블러링 (OpenCV)", command=blurOpenCV)
+openCVMenu.add_separator()
+openCVMenu.add_command(label="회전", command=rotateOpenCV)
+openCVMenu.add_command(label="확대/축소", command=zoomOpenCV)
+openCVMenu.add_separator()
+openCVMenu.add_command(label="수평웨이브", command=waveHorOpenCV)
+openCVMenu.add_command(label="수직웨이브", command=waveVirOpenCV)
+openCVMenu.add_separator()
+openCVMenu.add_command(label="카툰", command=cartoonOpenCV)
 
 
 

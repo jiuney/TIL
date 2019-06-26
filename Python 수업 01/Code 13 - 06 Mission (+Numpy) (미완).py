@@ -25,13 +25,10 @@ import pymysql
 ##### 함수 선언부 #####
 #####################
 
-def malloc(h, w, initValue=0):    # malloc = memory allocate
-    retMemory = []
-    for _ in range (h):
-        tmpList = []
-        for _ in range (w):
-            tmpList.append(initValue)
-        retMemory.append(tmpList)
+def malloc(h, w, initValue = 0, dataType=np.uint8):
+    tmpList = np.zeros((h, w), dtype = dataType).reshape(h, w)
+    retMemory = np.array([tmpList, tmpList, tmpList])
+    retMemory += initValue
     return retMemory
 
 def loadImageColor(fname):
@@ -43,16 +40,14 @@ def loadImageColor(fname):
     inW = photo.width
 
     # 메모리 확보
-    for _ in range(3):
-        inImage.append(malloc(inH, inW))
+    inImage = malloc(inH, inW)
 
-    photoRGB =photo.convert("RGB")
-    for i in range(inH):
-        for k in range(inW):
-            r, g, b = photoRGB.getpixel((k, i))    # r, g, b 채널을 나눠서 정보를 저장한 것
-            inImage[R][i][k] = r
-            inImage[G][i][k] = g
-            inImage[B][i][k] = b
+    photoRGB = photo.convert("RGB")
+
+    # 참고: https://rfriend.tistory.com/289
+    photoRGB = np.array(photoRGB).reshape(inH*inW, 3).T    # 구조를 바꿔서 2차원 배열로 바꾼 후에 행열을 뒤집어서 행이 열이 되고 열이 행이 되게 함. 이를 통해 r, g, b에 해당하는 번호들이 각각의 행에 들어가도록 함
+    photoRGB = photoRGB.reshape(3, inH, inW)    # r, g, b 정보끼리 모았으니 이제 다시 3차원 배열로 바꿔줌.
+    inImage = photoRGB
 
 def openImageColor():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH,outW
@@ -154,9 +149,7 @@ def saveImageColor():
         outArray.append(tmpList)
 
     outArray = np.array(outArray)
-    print(outArray)
     savePhoto = Image.fromarray(outArray.astype(np.uint8), "RGB")
-    print(savePhoto)
 
     saveFp = asksaveasfile(parent=window, mode='wb', defaultextension=".",
                            filetypes=(("그림 파일", "*.png;*.jpg;*.bmp;*.tif"), ("모든 파일", "*.*")))
@@ -182,77 +175,36 @@ def equalImageColor():
     outH = inH
     outW = inW
     # 메모리 확보
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW)
     # 진짜 컴퓨터비전 알고리즘
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                outImage[RGB][i][k] = inImage[RGB][i][k]
+    outImage = inImage[:]
     displayImageColor()
 
 # 밝게/어둡게 하기
 def addminusImageColor():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    # 중요! 출력 영상 크기 결정
-    # 지금은 동일 영상이니까 크기 같음
-    outH = inH
-    outW = inW
-    # 메모리 확보
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
     # 진짜 컴퓨터비전 알고리즘
     value = askinteger("밝게/어둡게 하기", "값 (-255 ~ 255)", minvalue = -255, maxvalue = 255)
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                if inImage[RGB][i][k] + value > 255:
-                    outImage[RGB][i][k] = 255
-                elif inImage[RGB][i][k] + value < 0:
-                    outImage[RGB][i][k] = 0
-                else:
-                    outImage[RGB][i][k] = inImage[RGB][i][k] + value
+    inImage = inImage.astype(np.int16)
+    outImage = inImage + value
+    outImage = np.where(outImage > 255, 255, outImage)
+    outImage = np.where(outImage < 0, 0, outImage)
     displayImageColor()
 
 # 화소값 반전
 def reverseImageColor():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    # 중요! 출력 영상 크기 결정
-    # 지금은 동일 영상이니까 크기 같음
-    outH = inH
-    outW = inW
-    # 메모리 확보
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
-    # 진짜 컴퓨터비전 알고리즘
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                outImage[RGB][i][k] = 255 - inImage[RGB][i][k]
+    outImage = 255 - inImage
     displayImageColor()
 
 # 파라볼라
 def paraImageColor():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    # 중요! 출력 영상 크기 결정
-    # 지금은 동일 영상이니까 크기 같음
-    outH = inH
-    outW = inW
-    # 메모리 확보
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
     # 진짜 컴퓨터비전 알고리즘
-    LUT = [0 for _ in range(256)]
-    for input in range(256):
-        LUT[input] = int(255 - 255 * math.pow(input / 128 - 1, 2))
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                outImage[RGB][i][k] = LUT[inImage[RGB][i][k]]
+    x = np.array([i for i in range(0, 256)])
+    LUT = 255 - 255 * np.power(x / 128 - 1, 2)
+    LUT = LUT.astype(np.uint8)
+    outImage = LUT[inImage]
     displayImageColor()
 
 # 모핑
@@ -273,42 +225,31 @@ def morphImageColor():
     inW2 = photo2.width
 
     # 메모리 확보
-    for _ in range(3):
-        inImage2.append(malloc(inH2, inW2))
+    inImage2 = malloc(inH2, inW2)
 
     photoRGB2 = photo2.convert("RGB")
-    for i in range(inH2):
-        for k in range(inW2):
-            r, g, b = photoRGB2.getpixel((k, i))
-            inImage2[R][i][k] = r
-            inImage2[G][i][k] = g
-            inImage2[B][i][k] = b
+
+    photoRGB2 = np.array(photoRGB2).reshape(inH2 * inW2, 3).T
+    photoRGB2 = photoRGB2.reshape(3, inH2, inW2)
+    inImage2 = photoRGB2
 
     ## 메모리 확보
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW)
 
     import threading
     import time
     def morpFunc():
-        w1 = 1;
+        global outImage
+        w1 = 1
         w2 = 0
         for _ in range(20):
-            for RGB in range(3) :
-                for i in range(inH):
-                    for k in range(inW):
-                        newValue = int(inImage[RGB][i][k] * w1 + inImage2[RGB][i][k] * w2)
-                        if newValue > 255:
-                            newValue = 255
-                        elif newValue < 0:
-                            newValue = 0
-                        outImage[RGB][i][k] = newValue
+            outImage = np.int_(inImage * w1 + inImage2 * w2)
+            outImage = np.where(outImage > 255, 255, outImage)
+            outImage = np.where(outImage < 0, 0, outImage)
             displayImageColor()
-            w1 -= 0.05;
+            w1 -= 0.05
             w2 += 0.05
-            time.sleep(0.5)
-
+            time.sleep(0.2)
     threading.Thread(target=morpFunc).start()
 
 # 이진화 알고리즘
@@ -318,32 +259,18 @@ def bwImageColor():
     outH = inH
     outW = inW
     # 크기 결정되었으니 메모리 할당
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW)
 
     # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
     # grayscale로 변환
-    avg_rgb = []
-    avg_rgb = malloc(inH, inW)
-    for i in range(inH):
-        for k in range(inW):
-            avg_rgb[i][k] = (inImage[R][i][k] + inImage[G][i][k] + inImage[B][i][k]) // 3
+    avg_rgb = [[0 for _ in range(inW)] for _ in range(inH)]
+    avg_rgb = (inImage[R] + inImage[G] + inImage[B]) // 3
 
     # grayscale의 평균값 구하기
-    sum = 0
-    for i in range(inH):
-        for k in range(inW):
-            sum += avg_rgb[i][k]
-    avg = sum // (inH*inW)
+    avg = np.sum(avg_rgb) // (inH*inW)
 
     # 평균값에 비교해 이진화
-    for i in range(inH):
-        for k in range(inW):
-            if avg_rgb[i][k] < avg:
-                outImage[R][i][k] = outImage[G][i][k] = outImage[B][i][k] = 0
-            else:
-                outImage[R][i][k] = outImage[G][i][k] = outImage[B][i][k] = 255
+    outImage[R] = outImage[G] = outImage[B] = np.where(avg_rgb < avg, 0, 255)
 
     displayImageColor()
 
@@ -351,21 +278,9 @@ def bwImageColor():
 def avgImageColor():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
     # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
-    sum_r = 0
-    for i in range(inH):
-        for k in range(inW):
-            sum_r += inImage[R][i][k]
-    avg_r = sum_r / (inH*inW)
-    sum_g = 0
-    for i in range(inH):
-        for k in range(inW):
-            sum_g += inImage[G][i][k]
-    avg_g = sum_g / (inH * inW)
-    sum_b = 0
-    for i in range(inH):
-        for k in range(inW):
-            sum_b += inImage[B][i][k]
-    avg_b = sum_b / (inH * inW)
+    avg_r = np.sum(inImage[R]) / (inH * inW)
+    avg_g = np.sum(inImage[G]) / (inH * inW)
+    avg_b = np.sum(inImage[B]) / (inH * inW)
     messagebox.showinfo("평균값", "R 평균값: " + str(avg_r) + "\nG 평균값: " + str(avg_g) + "\nB 평균값: " + str(avg_b))
 
 # 확대 (양선형 보간) 알고리즘
@@ -376,9 +291,7 @@ def upsizeImage2Color():
     outH = inH * v
     outW = inW * v
     # 크기 결정되었으니 메모리 할당
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW)
     # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
     rH, rW, iH, iW = [0] * 4    # 실수 위치 및 정수 위치
     x, y = 0, 0    # 실수와 정수의 차이값 (정수 위치로부터의 거리)
@@ -410,9 +323,7 @@ def downsizeImageColor():
     outH = inH // v
     outW = inW // v
     # 크기 결정되었으니 메모리 할당
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW).astype(np.uint16)
     # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
     for RGB in range(3):
         for i in range(inH):
@@ -427,28 +338,18 @@ def downsizeImageColor():
 import matplotlib.pyplot as plt
 def histoImageColor():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    rCountList = [0] * 256
-    gCountList = [0] * 256
-    bCountList = [0] * 256
-    tCountList = [0] * 256
 
     # grayscale로 변환 - R, G, B 평균값도 히스토그램에 표시하기 위해
-    avg_rgb = []
-    avg_rgb = malloc(inH, inW)
-    for i in range(inH):
-        for k in range(inW):
-            avg_rgb[i][k] = (inImage[R][i][k] + inImage[G][i][k] + inImage[B][i][k]) // 3
 
-    for i in range(inH):
-        for k in range(inW):
-            rCountList[inImage[R][i][k]] += 1
-            gCountList[inImage[G][i][k]] += 1
-            bCountList[inImage[B][i][k]] += 1
-            tCountList[avg_rgb[i][k]] += 1
-    plt.plot(rCountList, color="red")
-    plt.plot(gCountList, color="green")
-    plt.plot(bCountList, color="blue")
-    plt.plot(tCountList, color="black")
+    hist, bins= np.histogram(outImage, 256, [0, 256])
+    histR, bins = np.histogram(outImage[R], 256, [0, 256])
+    histG, bins = np.histogram(outImage[G], 256, [0, 256])
+    histB, bins = np.histogram(outImage[B], 256, [0, 256])
+
+    plt.plot(histR, color="red")
+    plt.plot(histG, color="green")
+    plt.plot(histB, color="blue")
+    plt.plot(hist, color="black")
     plt.show()
 
 # 스트레칭(명암대비) 알고리즘
@@ -459,26 +360,14 @@ def stretchImageColor():
     outH = inH
     outW = inW
     # 크기 결정되었으니 메모리 할당
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW)
 
     # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
-    maxVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
-    minVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
+    minVal = [np.min(inImage[R]), np.min(inImage[G]), np.min(inImage[B])]
+    maxVal = [np.max(inImage[R]), np.max(inImage[G]), np.max(inImage[B])]
 
     for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                if inImage[RGB][i][k] < minVal[RGB]:
-                    minVal[RGB] = inImage[RGB][i][k]
-                elif inImage[RGB][i][k] > maxVal[RGB]:
-                    maxVal[RGB] = inImage[RGB][i][k]
-
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                outImage[RGB][i][k] = int(((inImage[RGB][i][k] - minVal[RGB]) / (maxVal[RGB] - minVal[RGB])) * 255)
+        outImage[RGB] = np.int_(((inImage[RGB] - minVal[RGB]) / (maxVal[RGB] - minVal[RGB])) * 255)
 
     displayImageColor()
 
@@ -489,34 +378,34 @@ def endinImageColor():
     # 지금은 동일 영상이니까 크기 같음
     outH = inH
     outW = inW
+
     # 크기 결정되었으니 메모리 할당
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW)
+
     # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
-    maxVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
-    minVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                if inImage[RGB][i][k] < minVal[RGB]:
-                    minVal[RGB] = inImage[RGB][i][k]
-                elif inImage[RGB][i][k] > maxVal[RGB]:
-                    maxVal[RGB] = inImage[RGB][i][k]
+    minVal = np.array([np.min(inImage[R]), np.min(inImage[G]), np.min(inImage[B])])
+    maxVal = np.array([np.max(inImage[R]), np.max(inImage[G]), np.max(inImage[B])])
+
     minAdd = askinteger("최소", "최소에서 추가 값", minvalue=0, maxvalue=255)
     maxAdd = askinteger("최대", "최대에서 감소 값", minvalue=0, maxvalue=255)
+
+    minVal += minAdd
+    maxVal -= maxAdd
+
     for RGB in range(3):
-        minVal[RGB] += minAdd
-        maxVal[RGB] -= maxAdd
-    for RGB in range(3):
-        for i in range(inH):
-            for k in range(inW):
-                value = int(((inImage[RGB][i][k] - minVal[RGB]) / (maxVal[RGB] - minVal[RGB])) * 255)
-                if value < 0:
-                    value = 0
-                elif value > 255:
-                    value = 255
-                outImage[RGB][i][k] = value
+        outImage[RGB] = np.int_(((inImage[RGB] - minVal[RGB]) / (maxVal[RGB] - minVal[RGB])) * 255)
+    outImage = np.where(outImage > 255, 255, outImage)
+    outImage = np.where(outImage < 0, 0, outImage)
+
+    # for RGB in range(3):
+    #     for i in range(inH):
+    #         for k in range(inW):
+    #             value = int(((inImage[RGB][i][k] - minVal[RGB]) / (maxVal[RGB] - minVal[RGB])) * 255)
+    #             if value < 0:
+    #                 value = 0
+    #             elif value > 255:
+    #                 value = 255
+    #             outImage[RGB][i][k] = value
     displayImageColor()
 
 # 히스토그램 평활화 알고리즘
@@ -629,19 +518,14 @@ def upsizeImageColor():
 # 축소 알고리즘
 def downsizeImage2Color():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
-    scale = askinteger("축소", "값 (\"2\" 또는 \"4\" 또는 \"8\"만 입력)", minvalue=2, maxvalue=8)
+    v = askinteger("축소", "\"2\" 또는 \"4\" 또는 \"8\"만 입력", minvalue=2, maxvalue=8)
     # 중요! 출력 영상 크기 결정
-    # 지금은 동일 영상이니까 크기 같음
-    outH = inH // scale
-    outW = inW // scale
+    outH = inH // v
+    outW = inW // v
     # 크기 결정되었으니 메모리 할당
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
-    for RGB in range(3):
-        for i in range(outH):
-            for k in range(outW):
-                outImage[RGB][i][k] = inImage[RGB][i*scale][k*scale]
+    outImage = malloc(outH, outW)
+    # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
+    outImage = inImage[:, ::v, ::v]    # inImage[:][::v][::v] 로 하면 안됨
     displayImageColor()
 
 # 회전2 알고리즘 - 중심, 역방향
@@ -653,9 +537,7 @@ def rotateImage2Color():
     outH = inH
     outW = inW
     # 크기 결정되었으니 메모리 할당
-    outImage = []
-    for _ in range(3):
-        outImage.append(malloc(outH, outW))
+    outImage = malloc(outH, outW)
     # 진짜 컴퓨터 비전 알고리즘이 여기부터 시작
     # angle(degree)를 라디안으로 바꾸기
     radian = (angle * math.pi) / 180
@@ -1010,44 +892,6 @@ def saveTempImage():
     saveFp.close()
     return saveFp
 
-# # 영상 메타데이터 만들기
-# def findStat(fname):
-#     # 파일 열고, 읽기.
-#     fsize = os.path.getsize(fname)    # 파일의 크기 (바이트)
-#     inH = inW = int(math.sqrt(fsize))    # 핵심 코드
-#     photo = Image.open(fname)  # PIL 객체
-#     inH = photo.height
-#     inW = photo.width
-#     # 입력 영상 메모리 확보
-#     inImage = []
-#     for _ in range(3):
-#         inImage.append(malloc(inH, inW))
-#     # 파일에서 메모리로 가져오기
-#     photoRGB = photo.convert("RGB")
-#     for i in range(inH):
-#         for k in range(inW):
-#             r, g, b = photoRGB.getpixel((k, i))  # r, g, b 채널을 나눠서 정보를 저장한 것
-#             inImage[R][i][k] = r
-#             inImage[G][i][k] = g
-#             inImage[B][i][k] = b
-#     sum = [0] * 3
-#     avg = [0] * 3
-#     for RGB in range(3):
-#         for i in range(inH):
-#             for k in range(inW):
-#                 sum[RGB] += inImage[RGB][i][k]
-#         avg[RGB] = int(sum[RGB] / (inH*inW))
-#     maxVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
-#     minVal = [inImage[R][0][0], inImage[G][0][0], inImage[B][0][0]]
-#     for RGB in range(3):
-#         for i in range(inH):
-#             for k in range(inW):
-#                 if inImage[RGB][i][k] < minVal[RGB]:
-#                     minVal[RGB] = inImage[RGB][i][k]
-#                 elif inImage[RGB][i][k] > maxVal[RGB]:
-#                     maxVal[RGB] = inImage[RGB][i][k]
-#     return avg, maxVal, minVal
-
 # MySQL에 저장
 def saveMysqlColor():
     global window, canvas, paper, filename, inImage, outImage, inH, inW, outH, outW
@@ -1070,8 +914,9 @@ def saveMysqlColor():
         binData = rfp.read()
 
     fname, extname = os.path.basename(fullname).split(".")
-    fsize = os.path.getsize(fullname)
-    height = width = int(math.sqrt(fsize))
+    photo = Image.open(fullname)
+    height = photo.height
+    width = photo.width
 
     # avgVal, maxVal, minVal = findStat(fullname)    # 평균, 최대, 최소
 
@@ -1083,7 +928,7 @@ def saveMysqlColor():
     con.commit()
     cur.close()
     con.close()
-    os.remove(fullname)
+
     print("끝!!")
 
 # MySQL에서 불러오기
@@ -1256,20 +1101,6 @@ def openExcelColor():
         return
     loadExcelColor(filename)
     equalImageColor()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

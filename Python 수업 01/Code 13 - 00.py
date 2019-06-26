@@ -1291,7 +1291,7 @@ VIEW_X, VIEW_Y = 512, 512 # 화면에 보일 크기 (출력용)
 panYN = False
 sx, sy, ex, ey = [0] * 4
 
-IP_ADDR = "192.168.56.114"
+IP_ADDR = "192.168.56.113"
 USER_NAME = "root"
 USER_PW = "1234"
 DB_NAME = "BigData_DB"
