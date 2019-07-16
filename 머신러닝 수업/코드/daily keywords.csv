@@ -9,4 +9,5 @@
 190710,DA,Day007,문자열 참조,정규표현식,match,search,findall,finditer,매치된 위치 참조,OR연산자,문자열의 시작과 끝 표시,그룹 만들기,그룹 단위로 별칭 설정하기,문자열 관련 함수,apply 함수,그룹화,대용량 데이터 다루기
 190711,DA,Day008,그룹화 연습,데이터 분석,그룹화+apply함수,람다 함수(+map 함수),json파일 열기
 190712,DA,Day009,json과 딕셔너리,Counter 클래스,데이터 필터링(필터 함수),시계열 데이터,to_date(와 옵션들),시계열 데이터 추출,dt 접근자,quarter 속성,cut 함수,qcut 함수
-190715,ML,Day001,탐색적 분석방법(EDA),예측,Kaggle submission 연습,시각화,결측값 시각화,ggplot,bar chart,box plot,결측값 처리 후 시각화,
+190715,ML,Day001,탐색적 분석방법(EDA),예측,Kaggle submission 연습,시각화,결측값 시각화,ggplot,bar chart,box plot,결측값 처리 후 시각화
+190716,ML,Day002,지난 시간 연습 문제 풀이,교차 검증,오차 행렬,데이터 전처리,원핫 인코딩,파생변수 만들기,dtypes,Decision Tree,스크래핑,xml 출력,태그 내용 추출,id로 요소 추출,find함수,find_all함수,CSS 선택자
