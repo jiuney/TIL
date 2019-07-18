@@ -12,3 +12,4 @@
 190715,ML,Day001,탐색적 분석방법(EDA),예측,Kaggle submission 연습,시각화,결측값 시각화,ggplot,bar chart,box plot,결측값 처리 후 시각화
 190716,ML,Day002,지난 시간 연습 문제 풀이,교차 검증,오차 행렬,데이터 전처리,원핫 인코딩,파생변수 만들기,dtypes,Decision Tree,스크래핑,xml 출력,태그 내용 추출,id로 요소 추출,find함수,find_all함수,CSS 선택자
 190717,ML,Day003,데이터 스크래핑,CSS 선택자 추출
+190718,ML,Day004,문서 유사도,코사인 유사도,tfidf,로그인해서 웹 스크래핑,랜덤포레스트
