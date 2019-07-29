@@ -19,3 +19,4 @@
 190724,ML,Day008,논리 연산 문제
 190725,ML,Day009,활성화 함수,계단 함수,Sigmoid 함수,ReLU 함수,다차원 배열의 연산,행렬의 내적(행렬곱),신경망 코딩,Softmax
 190726,ML,Day010,순전파(forward propagation),역전파(backward propagation),Tensorflow,Tensorflow 자료형,상수형(Constant),플레이스홀더(Placeholder),변수(Variable)
+190729,ML,Day011,Tensorflow의 함수들,Tensorflow 기본 연산,간단한 선형회귀 예제,placeholder를 사용한 학습,Keras,Keras로 신경망 구성
