@@ -24,3 +24,4 @@
 190731,ML,Day013,데이터 시각화,모델 작성,회귀분석 모델 평가,결정계수 R square, 분류 모델 평가,confusion matrix,이진분류,정확도,정밀도,재현율,F점수,KNN (K Nearest Neighbor),DecisionTreeRegressor,K-means,Random Forest,성능에 대한 고민,Logistic Classification
 190801,ML,Day014,차원 축소,주성분 분석 (PCA),고유벡터(아이겐벡터eigenvector),고유값(아이겐밸류eigenvalue)
 190802,ML,Day015,데이터 전처리,Scaling,Softmax,softmax_cross_entropy_with_logits,원핫인코딩,flatten함수,zip함수
+190805,ML,Day016,가변형 변수 만들기(get_dummies),Neural Network,NN 정확도 높이기(width와 depth 조절)
