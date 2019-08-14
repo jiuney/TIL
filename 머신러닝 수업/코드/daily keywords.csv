@@ -29,3 +29,5 @@
 190807,DL,Day002,keras를 이용한 CNN,최적화,Google colab에서 한국어 NLP 처리 환경 구축,자연어 처리,konlpy,nltk,Okt,인코딩,원형추출(Lemmatize),어간추출(포터 알고리즘),불용어 처리,단어를 정수로 인코딩,Folium
 190808,DL,Day003,자연어 처리,Keras에서 문자열 처리,원핫인코딩,keras 원핫인코딩,원핫 인코딩의 문제점 (한계),언어 모델,out of vocabulary (OOV),OOV의 문제를 해결하기 위한 알고리즘,문자열 검색 관련 알고리즘,BPE (Byte Pair Encoding) 알고리즘
 190809,DL,Day004,Bag Of Words (BOW),CountVectorizer,문장간 유사도 조사,n-gram,tf-idf,DTM,베이시안(Bayesian) 분류기,나이브베이즈 분류기 모델
+190812,DL,Day005,나이브 베이시안 (naive Bayesian) 필터,클래스
+190814,DL,Day006,keras를 이용한 softmax 회귀,keras에서 모델 만들기,keras 문법,Tokenizer,padding,Word Embedding,Sequential,fit,모델 평가와 예측,모델 저장,모델 불러오기,Tensorflow에서 모델 저장,Tensorflow에서 모델 불러오기,함수형 API 신경망 구성
