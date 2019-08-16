@@ -31,3 +31,4 @@
 190809,DL,Day004,Bag Of Words (BOW),CountVectorizer,문장간 유사도 조사,n-gram,tf-idf,DTM,베이시안(Bayesian) 분류기,나이브베이즈 분류기 모델
 190812,DL,Day005,나이브 베이시안 (naive Bayesian) 필터,클래스
 190814,DL,Day006,keras를 이용한 softmax 회귀,keras에서 모델 만들기,keras 문법,Tokenizer,padding,Word Embedding,Sequential,fit,모델 평가와 예측,모델 저장,모델 불러오기,Tensorflow에서 모델 저장,Tensorflow에서 모델 불러오기,함수형 API 신경망 구성
+190816,DL,Day007,keras 문법,tf.get_default_graph(),tf.Graph(),testGraph.as_default(),.op.name,tf.name_scope(),Tensorflow를 이용한 RNN,MVC 분리,depth 늘리기,RNN에서 cost 구하는 과정,Squeeze 함수
