@@ -33,3 +33,5 @@
 190814,DL,Day006,keras를 이용한 softmax 회귀,keras에서 모델 만들기,keras 문법,Tokenizer,padding,Word Embedding,Sequential,fit,모델 평가와 예측,모델 저장,모델 불러오기,Tensorflow에서 모델 저장,Tensorflow에서 모델 불러오기,함수형 API 신경망 구성
 190816,DL,Day007,keras 문법,tf.get_default_graph(),tf.Graph(),testGraph.as_default(),.op.name,tf.name_scope(),Tensorflow를 이용한 RNN,MVC 분리,depth 늘리기,RNN에서 cost 구하는 과정,Squeeze 함수
 190819,DL,Day008,Tensorflow로 CNN 구현,Tensorflow의 layers 서브패키지를 활용한 CNN 모델링,keras에서 mnist CNN 모델링,Dogs vs. Cats 데이터셋 관리 (작게 나누기),os,shutil
+190820,DL,Day009,이터레이터 (Iterator),반복 가능한 객체 (iterable),간단한 이터레이터 만들기,제너레이터 (Generator),yield,이미지 데이터로 Convolutional layer 만들고 이미지 데이터 증식시키기,CNN 모델 만드는 과정,데이터 증식
+190821,DL,Day010,다차원에서 Transpose,tensorflow의 transpose,Tensorflow를 이용한 RNN 모델링으로 MNIST 데이터 분류하기,딕셔너리 만들기
