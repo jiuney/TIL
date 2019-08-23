@@ -36,3 +36,4 @@
 190820,DL,Day009,이터레이터 (Iterator),반복 가능한 객체 (iterable),간단한 이터레이터 만들기,제너레이터 (Generator),yield,이미지 데이터로 Convolutional layer 만들고 이미지 데이터 증식시키기,CNN 모델 만드는 과정,데이터 증식
 190821,DL,Day010,다차원에서 Transpose,tensorflow의 transpose,Tensorflow를 이용한 RNN 모델링으로 MNIST 데이터 분류하기,딕셔너리 만들기
 190822,DL,Day011,Tensorflow를 이용한 RNN,set함수,Apriori 알고리즘 구현,mlxtend,연관규칙(association rules)
+190823,DL,Day012,keras로 Neural Network 모델링 (간략 복습),keras를 이용해서 RNN 계층 구성,keras에서 RNN 구현,Size 알아보기,keras로 구현하는 RNN을 이용한 텍스트 생성
