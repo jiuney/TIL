@@ -36,7 +36,8 @@
 190820,DL,Day009,이터레이터 (Iterator),반복 가능한 객체 (iterable),간단한 이터레이터 만들기,제너레이터 (Generator),yield,이미지 데이터로 Convolutional layer 만들고 이미지 데이터 증식시키기,CNN 모델 만드는 과정,데이터 증식
 190821,DL,Day010,다차원에서 Transpose,tensorflow의 transpose,Tensorflow를 이용한 RNN 모델링으로 MNIST 데이터 분류하기,딕셔너리 만들기
 190822,DL,Day011,Tensorflow를 이용한 RNN,set함수,Apriori 알고리즘 구현,mlxtend,연관규칙(association rules)
-190823,DL,Day012,keras로 Neural Network 모델링 (간략 복습),keras를 이용해서 RNN 계층 구성,keras에서 RNN 구현,Size 알아보기,keras로 구현하는 RNN을 이용한 텍스트 생성
+190823,DL,Day012,keras로 Neural Network 모델링 (간략 복습),keras를 이용해서 RNN 계층 구성,keras에서 RNN 구현,Size 알아보기,keras로 구현하는 RNN을 이용한 텍스트 생성, vocab_size
 190826,DL,Day013,Word2Vec,gensim 설치,nltk,RNN 이용해 주식 예측
 190827,DL,Day014,검증 옵션,EarlyStopping(),Stacked RNN,keras를 이용한 LSTM 모델링으로 스팸메일 분류
 190828,DL,Day015,토큰화,품사 태깅,keras LSTM을 이용한 분류,로이터 기사 분류,np.unique(return_counts=True),.get_word_index(),np_utils.to_categorical(),네이버 영화 리뷰 분류,형태소 분리,패딩
+190829,DL,Day016,자연어 처리 (기본 작업 및 일반적인 수순),태깅,LSTM을 이용한 개체명 인식 모델 생성,K-means,RNN 기반의 텍스트 생성 (오늘은 전처리까지만)
