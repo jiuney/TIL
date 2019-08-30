@@ -41,3 +41,4 @@
 190827,DL,Day014,검증 옵션,EarlyStopping(),Stacked RNN,keras를 이용한 LSTM 모델링으로 스팸메일 분류
 190828,DL,Day015,토큰화,품사 태깅,keras LSTM을 이용한 분류,로이터 기사 분류,np.unique(return_counts=True),.get_word_index(),np_utils.to_categorical(),네이버 영화 리뷰 분류,형태소 분리,패딩
 190829,DL,Day016,자연어 처리 (기본 작업 및 일반적인 수순),태깅,LSTM을 이용한 개체명 인식 모델 생성,K-means,RNN 기반의 텍스트 생성 (오늘은 전처리까지만)
+190830,DL,Day017,RNN 기반의 텍스트 생성,동요 만들기
