@@ -43,3 +43,4 @@
 190829,DL,Day016,자연어 처리 (기본 작업 및 일반적인 수순),태깅,LSTM을 이용한 개체명 인식 모델 생성,K-means,RNN 기반의 텍스트 생성 (오늘은 전처리까지만)
 190830,DL,Day017,RNN 기반의 텍스트 생성,동요 만들기
 190905,DL,Day018,시계열 데이터 처리,pd.to_datetime(),pd.date_range(),shift연산,shift(),resample(),시계열 데이터 시각화,Auto Encoder,MNIST로 Auto Encoder 구현,Sequence-to-Sequence (seq2seq)
+190906,DL,Day019,Sequence-to-Sequence (seq2seq),Seq2Seq 단어 번역기 (tensorflow 버전),np.eye() 로 원핫 인코딩
