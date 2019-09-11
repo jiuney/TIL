@@ -46,3 +46,4 @@
 190906,DL,Day019,Sequence-to-Sequence (seq2seq),Seq2Seq 단어 번역기 (tensorflow 버전),np.eye() 로 원핫 인코딩
 190909,DL,Day020,pos: 형태소 분석 함수,토지 파일로 실습,Word2Vec 이용한 토지 데이터 읽기,다층 퍼셉트론 기반 텍스트 분류,Seq2Seq 실습: 영어를 불어로 번역하는 번역기,SOS,EOS,(번역) 모델 동작 순서,Keras 모델 설계 방식,Sequential api,Functional api,functional api 모델 설계(FFNN/다중입출력/RNN히든계층)
 190910,DL,Day021,RNN,RNN의 shape,return_sequences,실습: 챗봇 만들기(미완 - 내일 이어서 완성 예정),챗봇 만들기 순서,seq2seq에 필요한 데이터 3개
+190911,DL,Day022,실습: 챗봇 만들기,챗봇 만들기 순서,Seq2Seq
