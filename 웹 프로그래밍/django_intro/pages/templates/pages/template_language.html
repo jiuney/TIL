@@ -1,0 +1,96 @@
+<h1>Django Template Language (DTL) 실습</h1>
+
+<h3>1. 반복문</h3>
+
+{% for menu in menus %}
+    <p>{{forloop.counter}} {{menu}}</p>
+{% endfor %}
+
+{% for user in empty_list %}
+    <p>{{user}}</p>
+    <!-- empty: for 태그 안에 optional하게 있다. 빈 리스트일 때 출력된다. -->
+    {% empty%}
+        <p>현재 가입한 유저가 없습니다.</p>
+{% endfor %}
+
+<hr><hr>
+
+<h3>2. 조건문</h3>
+
+{% if '짜장면' in menus %}
+    <p>"짜장면에는 고춧가루지!"</p>
+{% endif %}
+
+<hr>
+
+{% for menu in menus %}
+    {{forloop.counter}}번째 도는 중...
+    {% if forloop.first %}
+        <p>짜장면 + 고춧가루</p>
+    {% else %}
+        <p>{{menu}}</p>
+    {% endif %}
+{% endfor %}
+
+<hr><hr>
+
+<h3>3. length filter 활용</h3>
+{% for message in messages %}
+    {% if message|length > 5 %}
+        <p>{{message}}, 글자가 너무 길어요.</p>
+    {% else %}
+        <p>{{message}}, {{message|length}}</p>
+    {% endif %}
+{% endfor %}
+
+<hr><hr>
+
+<h3>4. lorem ipsum</h3>
+{% lorem %}
+
+<hr>
+
+<!-- lorem ipsum 3단어만 출력 -->
+{% lorem 3 w %}
+
+<hr>
+
+<!-- lorem ipsum 4문단만 출력 -->
+{% lorem 4 p %}
+
+<hr><hr>
+
+<h3>5. 글자 수 제한 (truncate)</h3>
+<p>{{my_sentence|truncatewords:3}}</p>
+<p>{{my_sentence|truncatechars:3}}</p>
+
+<!-- truncatewords는 n개 단어 '이후'를 다 잘라내고, truncatechars는 'n번째 이상'부터 글자들을 잘라낸다. -->
+<!-- https://docs.djangoproject.com/en/2.2/ref/templates/builtins/ 참고 -->
+
+<hr><hr>
+
+<h3>6. 글자 관련 필터</h3>
+<p>{{ 'abc' | length }}</p>
+<p>{{ 'ABC' | lower }}</p>
+<p>{{ my_sentence | title }}</p>    <!-- 단어마다 첫번째 글자들 capitalize -->
+<p>{{ 'abc def' | capfirst }}</p>
+<p>{{ menus | random }}</p>
+
+<hr><hr>
+
+<h3>7. 연산</h3>
+<p>{{ 4 | add:6 }}</p> <!-- 근데 view에서 연산해서 넘겨주는게 더 좋다 -->
+
+<hr><hr>
+
+<h3>8. 날짜 표현</h3>
+<p>{{ datetimenow }}</p> <!-- view에서 가져온 변수 -->
+<p>{% now "DATETIME_FORMAT" %}</p> <!-- django에서 제공 -->
+<p>{% now "SHORT_DATETIME_FORMAT" %}</p> <!-- django에서 제공 -->
+<p>{% now "DATE_FORMAT" %}</p> <!-- django에서 제공 -->
+<p>{% now "SHORT_DATE_FORMAT" %}</p> <!-- django에서 제공 -->
+
+<hr><hr>
+
+<h3>9. 기타</h3>
+{{ 'google.com' | urlize }} <!-- 근데 a tag 쓰는게 더 낫다 -->
