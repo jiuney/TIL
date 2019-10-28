@@ -1,0 +1,22 @@
+<h1>
+    {{ name }}님의 로또 결과는<br>
+    {{ message }}<br>
+    입니다.
+</h1>
+<h3>세부 결과</h3>
+당첨 번호: {{ winner }}<br>
+{{ name }}님의 번호: {{ pick }}<br>
+<p>
+    <table border="1px">
+        <tr>
+            <th>당첨 번호</th>
+            <th>{{ name }}님의 번호</th>
+        </tr>
+        {% for w, p in match %}
+        <tr>
+            <td>{{ w }}</td>
+            <td>{{ p }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</p>
