@@ -1,0 +1,63 @@
+<!-- movies/edit.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1 class="text-center">영화 정보 수정</h1>
+    <form action="{% url 'movies:edit' movie.pk %}" method="POST">
+        {% csrf_token %}
+        <p>
+            <label for="title">제목</label><br>
+            <input type="text" name="title" id="title" value="{{ movie.title }}">
+        </p>
+        <br>
+        <p>
+            <label for="title_en">영어 제목</label><br>
+            <input type="text" name="title_en" id="title_en" value="{{ movie.title_en }}">
+        </p>
+        <br>
+        <p>
+            <label for="audience">관객 수</label><br>
+            <input type="number" name="audience" id="audience" value="{{ movie.audience }}">
+        </p>
+        <br>
+        <p>
+            <label for="open_date">개봉일</label><br>
+            <input type="date" name="open_date" id="open_date" value="{{ movie.open_date }}">
+        </p>
+        <br>
+        <p>
+            <label for="genre">장르</label><br>
+            <input type="text" name="genre" id="genre" value="{{ movie.genre }}">
+        </p>
+        <br>
+        <p>
+            <label for="watch_grade">등급</label><br>
+            <input type="text" name="watch_grade" id="watch_grade" value="{{ movie.watch_grade }}">
+        </p>
+        <br>
+        <p>
+            <label for="score">평점</label><br>
+            <input type="number" name="score" id="score" step="0.01" value="{{ movie.score }}">
+        </p>
+        <br>
+        <p>
+            <label for="poster_url">포스터 URL</label><br>
+            <input type="text" name="poster_url" id="poster_url" value="{{ movie.poster_url }}">
+        </p>
+        <br>
+        <p>
+            <label for="description">영화 설명</label><br>
+            <textarea name="description" id="description" cols="30" rows="10">{{ movie.description }}</textarea>
+        </p>
+        <br>
+        <p>
+            <input type="submit" value="submit">
+        </p>   
+    </form>
+    <p>
+        <a href="{% url 'movies:index' %}">[ BACK ]</a>
+    </p>
+
+{% endblock %}

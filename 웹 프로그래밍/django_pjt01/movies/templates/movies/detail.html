@@ -1,0 +1,55 @@
+<!-- movies/detail.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1 class="text-center">영화 상세 정보</h1>
+    <table>
+        <tbody>
+            <tr>
+                <th width="100">제목</th>
+                <td>{{ movie.title }}</td>
+            </tr>
+            <tr>
+                <th width="100">영어 제목</th>
+                <td>{{ movie.title_en }}</td>
+            </tr>
+            <tr>
+                <th width="100">관객 수</th>
+                <td>{{ movie.audience }}</td>
+            </tr>
+            <tr>
+                <th width="100">개봉일</th>
+                <td>{{ movie.open_date }}</td>
+            </tr>
+            <tr>
+                <th width="100">장르</th>
+                <td>{{ movie.genre }}</td>
+            </tr>
+            <tr>
+                <th width="100">등급</th>
+                <td>{{ movie.watch_grade }}</td>
+            </tr>
+            <tr>
+                <th width="100">평점</th>
+                <td>{{ movie.score }}</td>
+            </tr>
+            <tr>
+                <th width="100">포스터</th>
+                <td><img src="{{ movie.poster_url }}" alt="movie poster" width="400"></td>
+            </tr>
+            <tr>
+                <th width="100">영화 설명</th>
+                <td>{{ movie.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{% url 'movies:index' %}">[ 목록 ]</a>
+    <a href="{% url 'movies:edit' movie.pk %}">[ 수정 ]</a>
+    <form action="{% url 'movies:delete' movie.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value=" 삭제 " onclick="return confirm('삭제하시겠어요?')">
+    </form>
+
+{% endblock %}
