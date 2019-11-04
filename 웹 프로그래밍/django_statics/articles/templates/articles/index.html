@@ -1,0 +1,29 @@
+<!-- articles/index.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <h1>Articles!</h1>
+    <hr>
+
+    <ul class="list-unstyled ">
+        {% for article in articles %}
+            <li class="media">
+                
+                {% if article.image %}
+                    <img src="{{ article.image.url }}" class="mr-3" alt="..." width="64">
+                {% else %}
+                    <img src="..." class="mr-3" alt="..." width="64">
+                {% endif %}
+
+                <div class="media-body mb-5">
+                    <h5 class="mt-0 mb-1 "><a href="{% url 'articles:detail' article.pk %}" class="list-group-item-action list-group-flush">{{ article.title }}</a></h5>
+                    {{ article.content }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

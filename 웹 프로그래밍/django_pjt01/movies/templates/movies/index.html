@@ -5,11 +5,14 @@
 {% block content %}
 
     <h1 class="text-center">MOVIES</h1>
-    <p class="text-right"><a href="{% url 'movies:create' %}">[ 새 영화 등록 ]</a></p>
+    <a class="btn btn-light" href="{% url 'movies:create' %}" role="button">새 영화 등록</a>
     <hr>
     {% for movie in movies %}
-        <a href="{% url 'movies:detail' movie.pk %}"><strong>{{ movie.title }}</strong> ({{ movie.title_en }})</a>  |  {{ movie.score }}
-        <hr>
+        <div class="movie-{{ movie.pk }}">
+            <div class="list-group list-group-flush">
+                    <a href="{% url 'movies:detail' movie.pk %}" class="list-group-item list-group-item-action"><strong>{{ movie.title }}</strong> ({{ movie.title_en }})  |  {{ movie.score }}</a>
+            </div>
+        </div>
     {% endfor %}
 
 {% endblock %}

@@ -4,60 +4,60 @@
 
 {% block content %}
 
+    <br>
     <h1 class="text-center">영화 정보 생성</h1>
     <form action="{% url 'movies:create' %}" method="POST">
         {% csrf_token %}
-        <p>
+        <div class="form-group">
             <label for="title">제목</label><br>
-            <input type="text" name="title" id="title">
-        </p>
+            <input type="text" class="form-control" name="title" id="title">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="title_en">영어 제목</label><br>
-            <input type="text" name="title_en" id="title_en">
-        </p>
+            <input type="text" class="form-control" name="title_en" id="title_en">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="audience">관객 수</label><br>
-            <input type="number" name="audience" id="audience">
-        </p>
+            <input type="number" class="form-control" name="audience" id="audience">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="open_date">개봉일</label><br>
-            <input type="date" name="open_date" id="open_date">
-        </p>
+            <input type="date" class="form-control" name="open_date" id="open_date">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="genre">장르</label><br>
-            <input type="text" name="genre" id="genre">
-        </p>
+            <input type="text" class="form-control" name="genre" id="genre">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="watch_grade">등급</label><br>
-            <input type="text" name="watch_grade" id="watch_grade">
-        </p>
+            <input type="text" class="form-control" name="watch_grade" id="watch_grade">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="score">평점</label><br>
-            <input type="number" name="score" id="score" step="0.01">
-        </p>
+            <input type="number" class="form-control" name="score" id="score" step="0.01">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="poster_url">포스터 URL</label><br>
-            <input type="text" name="poster_url" id="poster_url">
-        </p>
+            <input type="text" class="form-control" name="poster_url" id="poster_url">
+        </div>
         <br>
-        <p>
+        <div class="form-group">
             <label for="description">영화 설명</label><br>
-            <textarea name="description" id="description" cols="30" rows="10"></textarea>
-        </p>
+            <textarea name="description" class="form-control" id="description" cols="30" rows="10"></textarea>
+        </div>
         <br>
-        <p>
-            <input type="submit" value="submit">
-        </p>   
+        <button type="submit" class="btn btn-primary">Submit</button>  
     </form>
-    <p>
-        <a href="{% url 'movies:index' %}">[ BACK ]</a>
-    </p>
+    <br>
+    <a class="btn btn-primary" href="{% url 'movies:index' %}" role="button">BACK</a>
+    <br>
+    <br>
 
 {% endblock %}

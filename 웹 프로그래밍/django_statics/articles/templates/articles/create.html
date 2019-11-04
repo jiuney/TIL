@@ -1,0 +1,15 @@
+<!-- articles/create.html -->
+
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <form action="{% url 'articles:create' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="title"><br>
+        <input type="text" name="content"><br>
+        <input type="file" name="image"><br>
+        <input type="submit">
+    </form>
+
+{% endblock %}

@@ -5,42 +5,42 @@
 {% block content %}
 
     <h1 class="text-center">영화 상세 정보</h1>
-    <table>
+    <table class="table table-hover table table-borderless">
         <tbody>
             <tr>
                 <th width="100">제목</th>
                 <td>{{ movie.title }}</td>
             </tr>
             <tr>
-                <th width="100">영어 제목</th>
+                <th>영어 제목</th>
                 <td>{{ movie.title_en }}</td>
             </tr>
             <tr>
-                <th width="100">관객 수</th>
+                <th>관객 수</th>
                 <td>{{ movie.audience }}</td>
             </tr>
             <tr>
-                <th width="100">개봉일</th>
+                <th>개봉일</th>
                 <td>{{ movie.open_date }}</td>
             </tr>
             <tr>
-                <th width="100">장르</th>
+                <th>장르</th>
                 <td>{{ movie.genre }}</td>
             </tr>
             <tr>
-                <th width="100">등급</th>
+                <th>등급</th>
                 <td>{{ movie.watch_grade }}</td>
             </tr>
             <tr>
-                <th width="100">평점</th>
+                <th>평점</th>
                 <td>{{ movie.score }}</td>
             </tr>
             <tr>
-                <th width="100">포스터</th>
+                <th>포스터</th>
                 <td><img src="{{ movie.poster_url }}" alt="movie poster" width="400"></td>
             </tr>
             <tr>
-                <th width="100">영화 설명</th>
+                <th>영화 설명</th>
                 <td>{{ movie.description }}</td>
             </tr>
         </tbody>

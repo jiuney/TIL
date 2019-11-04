@@ -1,0 +1,18 @@
+<!-- articles/detail.html -->
+
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <h1>{{ article.title }}</h1>
+    <p>{{ article.content }}</p>
+    {% if article.image %}
+        <p><img src="{{ article.image.url }}" alt="image"></p>
+    {% endif%}
+    <a href="{% url 'articles:update' article.pk %}">[ 수정 ]</a>
+    <form action="{% url 'articles:delete' article.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="삭제" onclick="return confirm('삭제하시겠어요?')">
+    </form>
+
+{% endblock %}
