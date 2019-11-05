@@ -1,0 +1,36 @@
+<!-- eithers/new.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="{% url 'eithers:create' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="글 제목을 입력해주세요.">
+    </div>
+    <div class="form-group">
+        <label for="issue_a">첫번째 선택지</label>
+        <input type="text" class="form-control" id="issue_a" name="issue_a" placeholder="첫번째 선택지를 입력해주세요.">
+    </div>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="image_a" name="image_a">
+        <label class="custom-file-label" for="image_a">첫번째 선택지의 이미지를 업로드하세요.</label>
+    </div>
+    <br>
+    <br>
+    <div class="form-group">
+        <label for="issue_b">두번째 선택지</label>
+        <input type="text" class="form-control" id="issue_b" name="issue_b" placeholder="두번째 선택지를 입력해주세요.">
+    </div>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="image_b" name="image_b">
+        <label class="custom-file-label" for="image_b">두번째 선택지의 이미지를 업로드하세요.</label>
+    </div>
+    <br>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}

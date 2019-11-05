@@ -1,0 +1,15 @@
+<!-- eithers/index.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul class="list-group list-group-flush">
+    {% for question in questions %}
+        <a href="{% url 'eithers:detail' question.pk %}" style="text-decoration: none !important;">
+            <li class="list-group-item list-group-item-action">{{ question.title }}</li>
+        </a>
+    {% endfor %}
+</ul>
+
+{% endblock %}
