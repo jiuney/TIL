@@ -312,7 +312,7 @@ def detail(request, question_pk):
         <div class="card">
             <img src="{{ question.image_b.url }}" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title">{{ question.issue_b }}</h5>
+                <h5 class="card-title text-center">{{ question.issue_b }}</h5>
             </div>
         </div>
     </div>
@@ -386,5 +386,98 @@ def index(request):
         'questions': questions
     }
     return render(request, 'eithers/index.html', context)
+```
+
+
+
+# 4. Answer 기능 넣기
+
+
+
+## 0) 최신 게시물/답변이 가장 먼저 출력되게 모델 수정
+
+`eithers` > `models.py` 에서 Answer 클래스 수정.
+
+```python
+class Question(models.Model):
+    ...
+
+    class Meta:
+        ordering = ['-pk']
+
+class Answer(models.Model):
+    ...
+
+    class Meta:
+        ordering = ['-pk']
+```
+
+
+
+## 1) 상세 페이지에서 답변 보이게 하기
+
+우선 답변이 보여야 하니까 예시로 하나 만들 것.
+
+shell plus를 사용하기 위해 django-extension 설치.
+
+```bash
+pip install django-extensions
+```
+
+`crud` > `settings.py` 에 앱 추가.
+
+```python
+INSTALLED_APPS = [
+    ...
+    'django_extensions',
+]
+```
+
+shell plus 실행.
+
+```bash
+python manage.py shell_plus
+```
+
+답변 하나 만들기.
+
+```python
+>>> question = Question.objects.get(pk=2)
+>>> answer = Answer()
+>>> answer.question_id = question
+>>> answer.pick = 2
+>>> answer.comment = "펭수가 대세지."
+>>> answer.save()
+```
+
+`eithers` > `views.py` 에서 detail 메소드 수정.   ============ 아직 아님!
+
+```python
+def detail(request, question_pk):
+    question = Question.objects.get(pk=question_pk)
+    answers = Answer.objects.filter(question_id=question)
+    color = "red"
+    context = {
+        'question': question,
+        'answers': answers,
+        'color': color
+    }
+    return render(request, 'eithers/detail.html', context)
+```
+
+`eithers` > `templates` > `eithers` > `detail.html` 수정.   ============ 아직 아님!
+
+```html
+
+<hr>
+답변 입력 자리
+<hr>
+
+<ul class="list-group list-group-flush">
+    {% for answer in answers %}
+        <li class="list-group-item list-group-item-action" style="color: {{ color }};">{{ answer.comment }}</li>
+    {% endfor %}
+</ul>
+
 ```
 
