@@ -19,10 +19,20 @@
         <div class="card">
             <img src="{{ question.image_b.url }}" class="card-img-top" alt="...">
             <div class="card-body">
-                <h5 class="card-title">{{ question.issue_b }}</h5>
+                <h5 class="card-title text-center">{{ question.issue_b }}</h5>
             </div>
         </div>
     </div>
 </div>
+
+<hr>
+답변 입력 자리
+<hr>
+
+<ul class="list-group list-group-flush">
+    {% for answer in answers %}
+        <li class="list-group-item list-group-item-action" style="color: {{ color }};">{{ answer.comment }}</li>
+    {% endfor %}
+</ul>
 
 {% endblock %}

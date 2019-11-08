@@ -9,7 +9,13 @@ class Question(models.Model):
     image_a = models.ImageField(blank=True, upload_to="eithers/images")
     image_b = models.ImageField(blank=True, upload_to="eithers/images")
 
+    class Meta:
+        ordering = ['-pk']
+
 class Answer(models.Model):
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
     pick = models.IntegerField()
     comment = models.TextField()
+
+    class Meta:
+        ordering = ['-pk']
