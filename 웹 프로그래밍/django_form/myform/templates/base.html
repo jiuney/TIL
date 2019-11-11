@@ -1,0 +1,32 @@
+{% load bootstrap4 %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block title %}
+        <title>django form</title>
+    {% endblock %}
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container">
+        {% if user.is_authenticated %}
+            <h3>
+                Hello, {{ user.username }}
+                <a href="{% url 'accounts:logout' %}">로그아웃</a>
+            </h3>
+        {% else %}
+            <h3>
+                <a href="{% url 'accounts:login' %}">로그인</a>
+                <a href="{% url 'accounts:signup' %}">회원가입</a>
+            </h3>
+        {% endif %}
+        <hr>
+        {% block body %}
+        {% endblock %}
+    </div>
+    {% bootstrap_javascript jquery="full" %}
+</body>
+</html>
