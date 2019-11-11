@@ -450,24 +450,29 @@ python manage.py shell_plus
 >>> answer.save()
 ```
 
-`eithers` > `views.py` 에서 detail 메소드 수정.   ============ 아직 아님!
+`eithers` > `views.py` 에서 detail 메소드 수정.
 
 ```python
 def detail(request, question_pk):
     question = Question.objects.get(pk=question_pk)
     answers = Answer.objects.filter(question_id=question)
-    color = "red"
     context = {
         'question': question,
-        'answers': answers,
-        'color': color
+        'answers': answers
     }
     return render(request, 'eithers/detail.html', context)
 ```
 
-`eithers` > `templates` > `eithers` > `detail.html` 수정.   ============ 아직 아님!
+`eithers` > `templates` > `eithers` > `detail.html` 수정.
 
 ```html
+<!-- eithers/detail.html -->
+
+...
+
+<div class="row">
+    ...
+</div>
 
 <hr>
 답변 입력 자리
@@ -475,9 +480,59 @@ def detail(request, question_pk):
 
 <ul class="list-group list-group-flush">
     {% for answer in answers %}
-        <li class="list-group-item list-group-item-action" style="color: {{ color }};">{{ answer.comment }}</li>
+        <li class="list-group-item list-group-item-action" style="
+            color: 
+                {% if answer.pick == 1 %}
+                    Orange
+                {% elif answer.pick == 2 %}
+                    Purple
+                {% endif %};">
+            {{ answer.comment }}
+        </li>
     {% endfor %}
 </ul>
 
+{% endblock %}
+```
+
+
+
+## 2) 답변 입력 기능 넣기
+
+`eithers` > `templates` > `eithers` > `detail.html` 에서 "답변 입력 자리"에 다음 코드 넣기. ===== 아직 미완!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+```html
+<!-- eithers/detail.html -->
+
+...
+
+<hr>
+
+<form class="was-validated">
+
+    <div class="form-group">
+        <select class="custom-select" required>
+            <option value="">당신의 선택은?</option>
+            <option value="1">{{ question.issue_a }}</option>
+            <option value="2">{{ question.issue_b }}</option>
+        </select>
+        <div class="invalid-feedback">반드시 하나를 선택하셔야 합니다.</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="validationTextarea">선택 이유</label>
+        <textarea class="form-control is-invalid" id="validationTextarea" placeholder="왜 선택하셨나요?" required></textarea>
+        <div class="invalid-feedback">
+            이유가 꼭 필요해요.
+        </div>
+    </div>
+
+    <button class="btn btn-light" type="submit">Submit</button>
+
+</form>
+
+<hr>
+
+...
 ```
 

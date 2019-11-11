@@ -31,10 +31,8 @@ def create(request):
 def detail(request, question_pk):
     question = Question.objects.get(pk=question_pk)
     answers = Answer.objects.filter(question_id=question)
-    color = "red"
     context = {
         'question': question,
-        'answers': answers,
-        'color': color
+        'answers': answers
     }
     return render(request, 'eithers/detail.html', context)

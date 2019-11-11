@@ -26,12 +26,43 @@
 </div>
 
 <hr>
-답변 입력 자리
+
+<form class="was-validated">
+
+    <div class="form-group">
+        <select class="custom-select" required>
+            <option value="">당신의 선택은?</option>
+            <option value="1">{{ question.issue_a }}</option>
+            <option value="2">{{ question.issue_b }}</option>
+        </select>
+        <div class="invalid-feedback">반드시 하나를 선택하셔야 합니다.</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="validationTextarea">선택 이유</label>
+        <textarea class="form-control is-invalid" id="validationTextarea" placeholder="왜 선택하셨나요?" required></textarea>
+        <div class="invalid-feedback">
+            이유가 꼭 필요해요.
+        </div>
+    </div>
+
+    <button class="btn btn-light" type="submit">Submit</button>
+
+</form>
+
 <hr>
 
 <ul class="list-group list-group-flush">
     {% for answer in answers %}
-        <li class="list-group-item list-group-item-action" style="color: {{ color }};">{{ answer.comment }}</li>
+        <li class="list-group-item list-group-item-action" style="
+            color: 
+                {% if answer.pick == 1 %}
+                    Orange
+                {% elif answer.pick == 2 %}
+                    Purple
+                {% endif %};">
+            {{ answer.comment }}
+        </li>
     {% endfor %}
 </ul>
 
