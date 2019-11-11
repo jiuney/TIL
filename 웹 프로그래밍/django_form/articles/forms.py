@@ -19,7 +19,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = "__all__"
+        fields = ('title', 'content')
 
 # class ArticleForm(forms.Form):
 #     # max_length/ min_length

@@ -8,10 +8,13 @@
     <p>글 내용: {{ article.content }}</p>
     <p>글 생성 시각: {{ article.created_at|date:"SHORT_DATE_FORMAT" }}</p>
     <p>글 수정 시각: {{ article.updated_at|date:"M, j, Y" }}</p>
-    <form action="{% url 'articles:delete' article.pk %}" method="POST">
-        {% csrf_token %}
-        <input type="submit" value="삭제">
-    </form>
+    {% if request.user == article.user %}
+        <a href="{% url 'articles:update' article.pk %}">[UPDATE]</a>
+        <form action="{% url 'articles:delete' article.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="삭제">
+        </form>
+    {% endif %}
     <hr>
     <!-- 댓글 -->
     <form action="{% url 'articles:comments_create' article.pk %}" method="POST">
@@ -24,12 +27,13 @@
     {% for comment in article.comment_set.all %}
         <div>
             댓글 : {{ comment.content }}
-            <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST">
-                {% csrf_token %}
-                <input type="submit" value="DELETE">
-            </form>
+            {% if request.user == comment.user %}
+                <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="DELETE">
+                </form>
+            {% endif %}
         </div>
     {% endfor %}
-    <a href="{% url 'articles:update' article.pk %}">[UPDATE]</a>
     <a href="{% url 'articles:index' %}">[BACK]</a>
 {% endblock %}
