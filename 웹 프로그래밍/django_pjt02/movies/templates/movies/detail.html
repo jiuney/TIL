@@ -1,0 +1,70 @@
+<!-- movies/detail.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">영화 정보 조회</h1>
+
+<table class="table table-borderless">
+    <thead class="thead-dark">
+        <tr>
+            <th>영화 제목</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ movie.title }}</td>
+        </tr>
+    </tbody>
+</table>
+<table class="table table-borderless">
+    <thead class="thead-dark">
+        <tr>
+            <th>영화 소개</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ movie.description }}</td>
+        </tr>
+    </tbody>
+</table>
+{% if movie.poster %}
+    <table class="table table-borderless">
+        <thead class="thead-dark">
+            <tr>
+                <th>영화 포스터</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><img class="mx-auto d-block img-fluid" src="{{ movie.poster.url }}" alt="movie_poster"></td>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}
+<table class="table table-borderless">
+    <thead class="thead-dark">
+        <tr class="text-center">
+            <th>
+                <a href="#" class="my-2 my-sm-0">
+                    <button type="button" class="btn btn-outline-light">목록</button>
+                </a>
+            </th>
+            <th>
+                <a href="#" class="my-2 my-sm-0">
+                    <button type="button" class="btn btn-outline-light">수정</button>
+                </a>
+            </th>
+            <th>
+                <form action="#" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value="삭제" class="btn btn-outline-danger" onclick="return confirm('영화 정보를 삭제하시겠습니까?')">
+                </form>
+            </th>
+        </tr>
+    </thead>
+</table>
+
+{% endblock %}

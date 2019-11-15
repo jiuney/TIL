@@ -1,0 +1,16 @@
+<!-- movies/new.html -->
+
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+<h1 class="text-center">영화 정보 생성</h1>
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons submit="Submit" reset="Cancel" %}{% endbuttons %}
+</form>
+
+{% endblock %}
