@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .bg {
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg">
+        <img
+            id="dino"
+            width="100px"
+            height="100px"
+            src="http://pixelartmaker.com/art/437771c87aeb56f.png" 
+            alt="google-dino">
+    </div>
+    <script>
+        const bg = document.querySelector('.bg')
+        const dino = bg.querySelector('#dino')
+
+        let x = 0
+        let y = 0
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key == ' ') {
+                dino.style.marginLeft = '0px'
+                dino.style.marginRight = '0px'
+            } else if (e.key == "ArrowLeft") {
+                x += 20
+                dino.style.marginRight = `${x}px`
+            } else if (e.key == "ArrowRight") {
+                x += 20 
+                dino.style.marginLeft = `${x}px`
+            } else if (e.key == "ArrowUp") {
+                y += 20
+                dino.style.marginBottom = `${y}px`
+            } else if (e.key == "ArrowDown") {
+                y += 20
+                dino.style.marginTop = `${y}px`
+            } else {
+                console.log('잘못된 key를 눌렀어요.')
+            }
+        })
+    </script>
+</body>
+</html>
