@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form class="needs-validation" action="" method="POST">
+    {% csrf_token %}
+
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="customFile" required>
+        <label class="custom-file-label" for="customFile">Choose file</label>
+    </div>
+
+    <input type="text" class="form-control" placeholder="키워드를 입력해주세요." required>
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</form>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+{% endblock %}
