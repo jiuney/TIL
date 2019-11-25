@@ -1,0 +1,39 @@
+{% load bootstrap4 %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://kit.fontawesome.com/8068875292.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    {% block title %}
+        <title>django form</title>
+    {% endblock %}
+    {% bootstrap_css %}
+    {% block css %}
+    {% endblock %}
+    <style>
+        body {
+            background: rgba(181, 227, 216, 1);
+        }
+        .search-btn:hover {
+            background: rgba(181, 227, 216, 0.5);
+            color: white;
+        }
+        .search-btn:focus {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    {% include 'articles/_nav.html' %}
+    <div class="container">
+        <hr>
+        {% block body %}
+        {% endblock %}
+    </div>
+    {% bootstrap_javascript jquery="full" %}
+</body>
+</html>

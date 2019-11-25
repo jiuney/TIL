@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="map" style="width:500px;height:400px;"></div>
+    <button id="together">모여라!</button>
+    <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=앱키"></script>
+    <script src="./circumcenter.js"></script>
+    <script>
+        let container = document.querySelector('#map'); //지도를 담을 영역의 DOM 레퍼런스
+        let options = { //지도를 생성할 때 필요한 기본 옵션
+            center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+            level: 3 //지도의 레벨(확대, 축소 정도)
+        };
+
+        let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+        const markers = []
+        // 중심 마커를 저장할 수 잇는 변수 선언
+        let centerMarker
+
+        // 카카오 맵에 이벤트 리스너 등록
+        kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+            addMarker(mouseEvent.latLng)
+        })
+
+        const addMarker = (position) => {
+            // 클릭 이벤트를 통해서 들어오는 position 정보를 이용하여 마커 생성
+            const marker = new kakao.maps.Marker({
+                position
+            })
+            markers.push(marker)    // markers 리스트에 marker를 하나씩 넣어준다. push는 파이썬의 append랑 비슷.
+            // 마커를 맵에 표시
+            marker.setMap(map)
+            
+            // 마지막 마커를 등록 후 3개가 넘었다면
+            if (markers.length > 3) {
+                // 첫번째 마커를 지도상에서 지운다
+                markers[0].setMap(null)
+                // 마커 목록에서도 첫번째 마커 정보를 지운다
+                markers.shift()
+            }
+        }
+
+        const togetherBtn = document.querySelector('#together')
+        togetherBtn.addEventListener('click', () => {
+            if (markers.length === 3) {
+                // 마커는 getPosition 함수로 좌표를 가져올 수 있다
+                // Ha: 위도, Ga: 경도
+                // 세 개의 마커의 x, y 좌표를 이용해 외심을 구한다
+                const center = circumcenter([
+                    [markers[0].getPosition().Ha, markers[0].getPosition().Ga],
+                    [markers[1].getPosition().Ha, markers[1].getPosition().Ga],
+                    [markers[2].getPosition().Ha, markers[2].getPosition().Ga]
+                ])
+                // 계산된 중심의 좌표(center)를 카카오맵에서 사용가능한 객체로 저장
+                const position = new kakao.maps.LatLng(center[0], center[1])
+                // 만약 이미 중심 마커가 있다면 제거
+                if (centerMarker) {
+                    centerMarker.setMap(null)
+                }
+                // 중심 좌표를 이용해 중심 마커 생성
+                centerMarker = new kakao.maps.Marker({
+                    position
+                })
+
+                /*
+                자바스크립트의 object는 파이썬의 dictionary와 비슷한 구조.
+                근데 key과 value가 같으면 같이 써줘도 된다.
+                즉,
+                { 'position': position }
+                이면 그냥
+                { position }
+                으로 써주면 된다.
+                */
+
+                // 중심 마커 등록
+                centerMarker.setMap(map)
+
+            } else {
+                console.log('마커가 세개가 아닙니다.')
+            }
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load socialaccount %}
+
+{% block css %}
+<style>
+    .login-container {
+        width: 100%;
+    }
+    .social-login {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="login-container d-flex flex-column align-items-center ">
+    <h1 class="col-6">로그인</h1>
+    <form action="" method="POST" class="col-6">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons submit="로그인" reset="Cancel" %}{% endbuttons %}
+    </form>
+    <a href="{% provider_login_url 'kakao' %}" class="btn btn-warning col-4 social-login">카카오 로그인</a>
+</div>
+{% endblock %}

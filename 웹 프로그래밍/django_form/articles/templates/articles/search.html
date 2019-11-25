@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load bootstrap_pagination %}
+
+{% block body %}
+    <h1>Search Result</h1>
+    {% for article in articles %}
+        {% include 'articles/_article.html' %}
+    {% endfor %}
+    <div class="d-flex justify-content-center">
+        {% bootstrap_paginate articles %}
+    </div>
+{% endblock %}

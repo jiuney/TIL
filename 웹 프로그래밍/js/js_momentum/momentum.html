@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        #parent {
+            height: 100%;
+        }
+        #time {
+            font-size: 5rem;    /* 5rem은 브라우저 기본 폰트 사이즈의 5배 */
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar justify-content-end fixed-top">
+        <span id="weather" class="font-weight-bold text-light"></span>
+    </nav>
+    
+    <div id="parent" class="d-flex justify-content-center align-items-center">
+        <div id="time" class="text-light font-weight-bold"></div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        axios.get('https://source.unsplash.com/1920x1080')
+            .then(response => {
+                const imgUrl = response.request.responseURL
+                document.body.style.backgroundImage = `url(${imgUrl})`
+            })
+        
+        const getTime = function () {
+            const now = new Date()
+            hours = now.getHours()
+            minutes = now.getMinutes()
+            seconds = now.getSeconds()
+            if (hours > 12) {
+                hours -= 12
+                ampm = '오후 '
+            } else {
+                ampm = '오전 '
+            }
+            if (hours < 10) {
+                hours = '0' + hours
+            }
+            if (minutes < 10) {
+                minutes = '0' + minutes
+            }
+            if (seconds < 10) {
+                seconds = '0' + seconds
+            }
+            document.querySelector('#time').innerHTML = ampm + hours + ':' + minutes + ':' + seconds
+        }
+
+        setInterval(getTime, 1000)
+
+        const weather = document.querySelector('#weather')
+        const WEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?q=seoul&APPID=앱키&units=metric'
+        axios.get(WEATHER_API_URL)
+            .then(res => {
+                const weatherCity = res.data.name
+                const weatherData = res.data.weather[0].description
+                const temperature = res.data.main.temp
+                weather.innerText = `${temperature}°C ${weatherCity} ${weatherData}`
+            })
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
