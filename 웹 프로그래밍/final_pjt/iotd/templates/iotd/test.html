@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% for item in productList %}
+
+    <br>
+    <h3>제품명 : {{ item.productName }}</h3>
+    <h3>사이트명 : {{ retailer }}</h3>
+    <h3>링크 : {{ item.link }}</h3>
+    <h3>썸네일 주소 : {{ item.thumbnail_url }}</h3>
+    <h3>가격 : {{ item.price }}</h3>
+    <h3>리뷰 개수 : {{ item.reviewnum }}</h3>
+    <h3>별점 : {{ item.rating }}</h3>
+    <br>
+    <hr>
+
+{% endfor %}
+
+{% endblock %}

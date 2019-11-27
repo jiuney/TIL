@@ -2,18 +2,20 @@
 
 {% block content %}
 
-<form class="needs-validation" action="" method="POST">
-    {% csrf_token %}
+<div id="forms" class="d-flex justify-content-center align-items-center">
+    <form class="needs-validation" action="{% url 'iotd:detail' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile" required>
-        <label class="custom-file-label" for="customFile">Choose file</label>
-    </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" name="userImage" required>
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
 
-    <input type="text" class="form-control" placeholder="키워드를 입력해주세요." required>
-    <button class="btn btn-primary" type="submit">Submit</button>
+        <input type="text" class="form-control" placeholder="키워드를 입력해주세요." name="userKeyword" required>
+        <button class="btn btn-primary" type="submit">Submit</button>
 
-</form>
+    </form>
+</div>
 
 <script>
 // Example starter JavaScript for disabling form submissions if there are invalid fields

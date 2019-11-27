@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">{{ userKeyword }}</h1>
+
+<img class="img-fluid d-block mx-auto" src="{{ userImage.url }}" alt="product image">
+
+<div class="list-group">
+
+    {% if message %}
+
+        <h3 class="text-center mt-3">{{ message }}</h1>
+
+    {% else %}
+
+        {% for item in productList %}
+            <a href="{{ item.link }}" class="list-group-item list-group-item-action" target="_blank">
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ item.productName }}</h5><br>
+                        </div>
+                        <h6 class="mb-1">{{ item.price }}</p>
+                        <p class="mb-1">{{ retailer }}</p>
+                        {% if item.reviewnum == None %}
+                            <small class="text-muted">리뷰가 없습니다.</small><br>
+                        {% else %}
+                            <small class="text-muted">{{ item.reviewnum }}</small><br>
+                        {% endif %}
+                        {% if item.rating == None %}
+                            <small class="text-muted">평점이 없습니다.</small><br>
+                        {% else %}
+                            <small class="text-muted">{{ item.rating }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-3 pull-right">
+                        <img src="{{ item.thumbnail_url }}" alt="list thumbnail" class="img-thumbnail img-fluid float-right">
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

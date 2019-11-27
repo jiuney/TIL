@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="forms" class="d-flex justify-content-center align-items-center">
+    <form class="needs-validation" action="{% url 'iotd:crawling' %}" method="POST">
+        {% csrf_token %}
+
+        <select class="form-control" id="exampleFormControlSelect1" name="modelnum">
+            <option>model_1</option>
+            <option>model_2</option>
+            <option>model_3</option>
+        </select>
+
+        <input type="text" class="form-control" placeholder="링크를 입력해주세요." name="prdlink"" required>
+        <button class="btn btn-primary" type="submit">Submit</button>
+
+    </form>
+</div>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+{% endblock %}
